@@ -1,0 +1,88 @@
+body {
+  min-height: 400px;
+  margin-bottom: 100px;
+  clear: both;
+  background-color: #ffffff;
+  padding-bottom: 80px;
+}
+
+.jumbotron {
+  font-family: merriweather; 
+  background-color: #76a3fb;
+  margin-top: 20px; 
+  padding: 20px;
+}
+
+html, .fullheight {
+  min-height: 100% !important;
+  height: 100%;
+}
+.zone {
+  text-align: center;
+  border:1px solid #bbb;
+  transition: all 0.3s linear;
+}
+
+.zone {
+  box-shadow:rgba(0,0,0,0.8) 0px 5px 15px, inset rgba(0,0,0,0.15) 0px -10px 20px;
+}
+
+.navbar {
+  width: 100%;
+  margin-bottom: 0;
+  border-radius: 0;
+}
+
+.row.content {height: 450px}
+
+.sidenav {
+  font-family: futura;
+  padding-top: 20px;
+  font-size: 20px;
+  background-color: #c2c2c2;
+  height: 100%;
+}
+
+.navbar-custom {
+  font-family: futura;
+  background-color: #c2c2c2;
+  font-size: 30px;
+  padding-left: 55px;
+  padding-right: 55px;
+}
+
+.linktext {
+  color: black;
+} 
+
+.blurbtitle {
+  color: #111111;
+}
+
+.blurb {
+  color: #222222; 
+  font-family: merriweather;
+}
+
+footer {
+  left: 0;
+  bottom: 0;
+  position: fixed;
+  width: 100%;
+  background-color: #555;
+  color: white;
+  padding: 15px;
+}
+
+img {
+  width: 100%;
+  height: auto;
+  margin: 20px;
+}
+
+@media screen and (max-width: 767px) {
+  .sidenav {
+    height: auto;
+   }
+  .row.content { height:auto; }
+}

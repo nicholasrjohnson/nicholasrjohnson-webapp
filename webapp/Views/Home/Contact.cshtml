@@ -1,0 +1,18 @@
+@{
+    ViewData["Title"] = "Contact";
+}
+<div class="jumbotron jumbotron-fluid zone"> 
+        <h2 id="jumbo1">Contact Me</h2>
+	<form  name="EmailTestForm">
+          <label for="inputEmailSend" class="sr-only">Email address</label>
+          <input type="email" id="inputEmailSend" class="form-control" placeholder="Email" required autofocus>
+          <label for="inputMessage" class="sr-only">Message</label>
+	 <textarea class="form-control" id="inputMessage" rows="13"></textarea>
+          <button class="btn btn-lg btn-primary btn-dark" id="mailbutton" type="submit">Send</button>
+        </form>
+      </div>
+    </div>
+
+@section Scripts {
+  <script src="~/js/contact.js" asp-append-version="true"></script>
+}

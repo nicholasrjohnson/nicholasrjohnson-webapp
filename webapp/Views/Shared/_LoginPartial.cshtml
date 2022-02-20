@@ -1,0 +1,109 @@
+@using System.Text.Json;
+
+<div id="Logout">
+  <p><a id="innerIdSide" href="/InnerSanctum/InnerSanctumIndex">Inner</a></p>
+  <p><button id="logoutButton" class="nav-link btn btn-link text-dark">Click here to Logout</button></p>
+</div>
+
+<div class="container" id="Login">
+  <h4>Use a local account to log in.</h4>
+  <div>
+    <label for="email">Email</label>
+    <input type="text" id="email"/>
+  </div>
+  <div>
+    <label for="password">Password</label>
+    <input type="password" id="password"/>
+  </div>
+  <div>
+  <input id="rememberMe" type="checkbox">
+    <label for="rememberMe">
+      Remember Me
+    </label>
+  </div>
+    <div>
+      <p>
+        <button id="loginButton">Log in</button>
+      </p>
+      <p>
+        @Html.ActionLink("Forgot your password?", "ForgotPassword", "Account")
+      </p>
+      <p>
+        @Html.ActionLink("Register as a new user", "Register", "Account", new { model = new RegisterModel() }, null)
+      </p>
+      <p>
+        @Html.ActionLink("Resend email confirmation", "ResendEmailConfirmation", "Account")
+      </p>
+    </div>
+  </div>
+    <script>
+    $(document).ready( function() {
+        var userAuthorized = @User.Identity.IsAuthenticated.ToString().ToLower();
+   
+        if(userAuthorized) {
+            $("#Login").hide();
+            $("#Logout").show()
+        } else {
+            $("#Login").show();
+            $("#Logout").hide(); 
+        }
+
+        $("#logoutButton").click( function() {
+            $.ajax({
+                url: "/Account/Logout"
+            }).done(function(result) {
+                $("#Login").show();
+                $("#Logout").hide();
+            }).fail( function() {
+                alert("logout failed");
+            });
+       });
+   
+        $("#loginButton").click( function() {
+            var emailText = $("#email").val();
+            var passwordText = $("#password").val();
+            var rememberMeVal = Boolean($("#rememberMe"));
+            $.ajax({
+                type: "POST",
+                url: "/Account/Login",
+                data: {
+                    email: emailText,
+                    password: passwordText,
+                    rememberMe: rememberMeVal
+                }
+            }).done(function(result) {
+                var returnUrl = result.url;
+                var succeeded = result.succeeded;
+                if( succeeded == 'true' ) {
+                    $("#Login").hide();
+                    $("#Logout").show();
+                } else if( returnUrl == "InvalidLogin") {
+                    alert("Bad Login!");
+                } else {
+                    window.location.href = returnUrl;
+                }
+            }).fail( function() {
+                alert("login failed");
+            });
+        });
+      
+        //$("#registerButton").click( function() {
+          //  window.location.href = @Html.ActionLink("Register", "Account");
+            //var emailText = $("#email").val();
+            //var passwordText = $("#password").val();
+            //var rememberMeVal = Boolean($("#rememberMe"));
+
+            //var link = "/Ajax/RegisterAjax";
+
+            //var model = { Input: { Email: null, Password: null, ConfirmPassword: null},  ReturnUrl: null, ExternalLogins: null};
+
+            //$.ajax({
+            //    type: "POST",
+           //     url: link, 
+            //    data: JSON.stringify(model), 
+            //    dataType: "json"
+           //});
+        //});        
+    });
+
+</script>

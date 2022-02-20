@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html lang="eng">
+
+<head>
+	<title>Nicholas R Johnson</title>
+	<meta charset="utf=8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+  <script src="~/lib/jquery/dist/jquery.min.js"></script>
+  <script src="~/lib/popper/popper.min.js"></script>
+  <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="~/js/site.js" asp-append-version="true"></script>
+  <script src="~/js/inner.js" asp-append-version="true"></script>
+  @RenderSection("Scripts", required: false)
+</head>
+<body>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <nav class="navbar navbar-expand-sm navbar-custom zone">
+         <div class="navbar-header">
+            <a class="navbar-brand linktext" rel="home" href="#">Nicholas R Johnson</a>
+         </div>
+         <div class="collapse navbar-collapse" id="myNavbar">
+           <ul class="navbar-nav d-flex mb-auto mt-0 ml-auto">
+             <li class="nav-item"><a id="homeIdTop" class="nav-link py-0" href="/Home/Index">Home</a></li>
+             <li class="nav-item"><a id="aboutIdTop" class="nav-link py-0" href="/Home/About">About</a></li>
+             <li class="nav-item"><a id="projectsIdTop" class="nav-link py-0" href="/Home/Projects">Projects</a></li>
+             <li class="nav-item"><a id="contactIdTop" class="nav-link py-0" href="/Home/Contact">Contact</a></li>
+             <li class="nav-item"><a id="innerIdTop" class="nav-link py-0" href="/InnerSanctum/InnerSanctumIndex">Inner</a></li>
+           </ul>
+           <ul class="nav bg-dark navbar-dark navbar-right">
+           </ul>
+         </div>
+      </nav>
+    <div>
+  </div> 
+  <div class="row">
+    <div class="col-sm-2 sidenav fullheight text-center zone" style="margin-top:20px; padding:15px;">
+      <p><a id="homeIdSide" href="/Home/Index">Home</a></p>
+      <p><a class="linktext" href="https://blog.nicholasrjohnson.com">Blog</a></p>
+      <p><a id="contactIdSide" href="/Home/Contact">Contact</a></p>
+      <p><a id="adminIdSide" href="/Admin/AdminIndex">Manage Account</a></p>
+       <p><button id="logoutButton" class="nav-link btn btn-link text-dark">Click here to Logout</button></p>
+    </div>
+    <div class="col">
+      <main role="main" class="pb-3">
+        @RenderBody()
+      </main>
+    </div>
+    <footer class="container-fluid text-center" >
+      <p>&#x00A9;2021 Nicholas Johnson, All rights reserved</p>
+    </footer>
+  </div>
+</div>
+<script>
+  $("#logoutButton").click( function() {
+            $.ajax({
+                url: "/Account/Logout"
+            }).done(function(result) {
+                $("#Login").show();
+                $("#Logout").hide();
+            }).fail( function() {
+                alert("logout failed");
+            });
+       });
+</script>
+</body>
+</html>
+
