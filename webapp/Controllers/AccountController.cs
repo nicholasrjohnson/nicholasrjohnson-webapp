@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using webapp.Models;
@@ -46,7 +45,7 @@ namespace webapp.Controllers
         public async Task<IActionResult> ConfirmEmail(string userId, string code) {
             ConfirmEmailModel model = new ConfirmEmailModel();
             if(userId == null || code == null) {
-                return View("~/Home/Index.cshtml");
+                return View("/Views/Home/Index.cshtml");
             }
 
             var user = await _userManager.FindByIdAsync(userId);
@@ -60,7 +59,7 @@ namespace webapp.Controllers
             var result = await _userManager.ConfirmEmailAsync(user, code);                        
         
 
-            return View(result.Succeeded ? "~/Account/ConfirmEmail.cshmtl" : "~/Home/Error.cshtml");
+            return View(result.Succeeded ? "/Views/Account/ConfirmEmail.cshtml" : "/Views/Home/Error.cshtml");
         }
 
         public async Task<IActionResult> ConfirmEmailChange(string userId, string email, string code)
@@ -69,7 +68,7 @@ namespace webapp.Controllers
 
             if (userId == null || email == null || code == null)
             {
-                return RedirectToPage("/Index");
+                return RedirectToPage("/Views/Home/Index.cshtml");
             }
 
             var user = await _userManager.FindByIdAsync(userId);
@@ -112,28 +111,27 @@ namespace webapp.Controllers
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToPage("./ForgotPasswordConfirmation");
+                    return View("/Views/Account/ForgotPasswordConfirmation.cshtml");
                 }
 
                 // For more information on how to enable account confirmation and password reset please 
                 // visit https://go.microsoft.com/fwlink/?LinkID=532713
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                var callbackUrl = Url.Page(
-                    "/Account/ResetPassword",
-                    pageHandler: null,
-                    values: new { area = "Identity", code },
-                    protocol: Request.Scheme);
-
+                var callbackUrl = Url.Content("/Account/ResetPassword/" + code);
                 await _emailSender.SendEmailAsync(
                     model.Input.Email,
                     "Reset Password",
                     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                return RedirectToPage("./ForgotPasswordConfirmation");
+                return View("/Views/Account/ForgotPasswordConfirmation.cshtml");
             }
 
             return View(model);
+        }
+
+        public IActionResult ForgotPasswordConfirmation() {
+            return View();
         }
 
         public IActionResult AccessDenied() {
@@ -252,10 +250,6 @@ namespace webapp.Controllers
             }
             return View(model);
         }        
-
-        public IActionResult ForgotPasswordConfirmation() {
-            return View();
-        }
 
         public IActionResult Lockout() {
             return View();
