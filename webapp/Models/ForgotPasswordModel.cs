@@ -10,7 +10,7 @@ namespace webapp.Models
             Input = new InputModel();
         }
         
-            [BindProperty]
+        [BindProperty]
         public InputModel Input { get; set; }
 
         public class InputModel

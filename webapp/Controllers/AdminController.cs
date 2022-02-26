@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -23,7 +24,6 @@ namespace webapp.Controllers
     [Authorize]
     public class AdminController : Controller
     {
-       
         private readonly UserManager<ApplicationIdentityUser> _userManager;
         private readonly SignInManager<ApplicationIdentityUser> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
@@ -31,6 +31,7 @@ namespace webapp.Controllers
         private readonly IEmailSender _emailSender;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
+
         public AdminController(
             UserManager<ApplicationIdentityUser> userManager,
             SignInManager<ApplicationIdentityUser> signInManager,
@@ -55,9 +56,16 @@ namespace webapp.Controllers
             return View(model); 
         }
 
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
         {
-            
             if (!ModelState.IsValid)
             {
                 return View(model = new ChangePasswordModel());
@@ -91,6 +99,7 @@ namespace webapp.Controllers
 
             return View(model);
         }
+
         public async Task<IActionResult> GetSetPasswordAsync()
         {
             var user = await _userManager.GetUserAsync(User);

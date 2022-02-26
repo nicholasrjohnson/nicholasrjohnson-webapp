@@ -40,11 +40,22 @@ namespace webapp
                     options.UseMySql(
                         connectionString, ServerVersion.AutoDetect(connectionString)));
 
-            services.AddIdentity<ApplicationIdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationIdentityUser, IdentityRole>(options =>
+            {
+                options.Password.RequiredLength = 15;
+                options.Password.RequireDigit = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.User.RequireUniqueEmail = true;
+            })
                 .AddUserManager<UserManager<ApplicationIdentityUser>>()
                 .AddEntityFrameworkStores<ApplicationIdentityDbContext>()
                 .AddDefaultTokenProviders();
-
+            
+            services.Configure<DataProtectionTokenProviderOptions>(opt =>
+                opt.TokenLifespan = TimeSpan.FromHours(2)
+            );
+            
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = new PathString("/Home/Index");
@@ -75,6 +86,7 @@ namespace webapp
                 app.UseExceptionHandler("/Views/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             }
+            //app.UseStatusCodePagesWithReExecute("/error/{0}");
             app.UseStaticFiles();
 
             app.UseRouting();
