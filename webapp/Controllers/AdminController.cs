@@ -57,18 +57,31 @@ namespace webapp.Controllers
         }
 
         [HttpGet]
-        public IActionResult ChangePassword()
+        public async Task<IActionResult> ChangePassword()
         {
-            return View();
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            var hasPassword = await _userManager.HasPasswordAsync(user);
+
+            if (hasPassword)
+            {
+                return View();
+            };
+
+            return View("/Views/Admin/AdminIndex.cshtml");
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(model = new ChangePasswordModel());
+                return View();
             }
 
             var user = await _userManager.GetUserAsync(User);
@@ -90,7 +103,7 @@ namespace webapp.Controllers
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
-                return View();
+                return View(model);
             }
 
             await _signInManager.RefreshSignInAsync(user);

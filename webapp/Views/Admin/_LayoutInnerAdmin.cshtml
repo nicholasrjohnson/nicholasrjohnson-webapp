@@ -65,15 +65,15 @@
         <h4>Change your account settings</h4>
         <hr />
         <ul class="nav nav-pills">
-          <li class="nav-item">@Html.ActionLink("Profile","AdminIndex","Admin", new { model = new AdminIndexModel()}, new { @class = "nav-link", id = "profile" } )</li>
-          <li class="nav-item">@Html.ActionLink("Change Email", "ChangeEmail", "Admin", new { model = new ChangeEmailModel()}, new {@class = "nav-link", id="email" })</li>
-          <li class="nav-item">@Html.ActionLink("Change Password", "ChangePassword", "Admin", new { model = new ChangePasswordModel()}, new {@class = "nav-link", id="change-password"})</a></li>
+          <li class="nav-item">@Html.ActionLink("Profile","AdminIndex","Admin", new { @class = "nav-link", id = "profile" } )</li>
+          <li class="nav-item">@Html.ActionLink("Change Email", "ChangeEmail", "Admin",  new {@class = "nav-link", id="email" })</li>
+          <li class="nav-item">@Html.ActionLink("Change Password", "ChangePassword", "Admin", new {@class = "nav-link", id="change-password"})</a></li>
           @if (hasExternalLogins)
           {
-            <li id="external-logins" class="nav-item">@Html.ActionLink("External logins", "ExternalLogins", "Admin",  new { model = new ExternalLoginModel()}, new { @class = "nav-link", id = "external-login" })</li>                   
+            <li id="external-logins" class="nav-item">@Html.ActionLink("External logins", "ExternalLogins", "Admin", new { @class = "nav-link", id = "external-login" })</li>                   
           }
-          <li class="nav-item">@Html.ActionLink("Two-factor authentication", "TwoFactorAuthentication", "Admin", new { model = new TwoFactorAuthenticationModel()}, new { @class = "nav-link", id = "two-factor" })</li>
-          <li class="nav-item">@Html.ActionLink("Person Data", "PersonalData", "Admin", new { model = new DeletePersonalDataModel()}, new { @class = "nav-link", id = "personal-data" })</li>
+          <li class="nav-item">@Html.ActionLink("Two-factor authentication", "TwoFactorAuthentication", "Admin", new { @class = "nav-link", id = "two-factor" })</li>
+          <li class="nav-item">@Html.ActionLink("Person Data", "PersonalData", "Admin", new { @class = "nav-link", id = "personal-data" })</li>
         </ul>
     </div>
   </div>

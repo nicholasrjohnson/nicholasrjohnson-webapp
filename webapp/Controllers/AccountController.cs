@@ -113,7 +113,7 @@ namespace webapp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                model = new ForgotPasswordModel();
+                return View(); 
             }
             else
             {
