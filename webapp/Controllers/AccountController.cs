@@ -202,120 +202,7 @@ namespace webapp.Controllers
         public IActionResult AccessDenied() {
             return View();
         }
-
-        public IActionResult GetExternalLogin()
-        {
-            return RedirectToPage("./Login");
-        } 
-
-        public IActionResult PostExternalLogin(string provider, string returnUrl = null)
-        {
-            // Request a redirect to the external login provider.
-            var redirectUrl = Url.Page("./ExternalLogin", pageHandler: "Callback", values: new { returnUrl });
-            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
-            return new ChallengeResult(provider, properties);
-        }
-
-        public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginModel model, string remoteError = null)
-        {
-
-            if (!ModelState.IsValid) { 
-                model = new ExternalLoginModel();
-                return View(model);
-            } else {
-                model.ReturnUrl = model.ReturnUrl;
-
-                model.ReturnUrl = model.ReturnUrl ?? Url.Content("~/");
-                
-                if (model.ErrorMessage != null)
-                {
-                    model.ErrorMessage = $"Error from external provider: {remoteError}";
-                    return RedirectToPage("Login", model);
-                }
-                var info = await _signInManager.GetExternalLoginInfoAsync();
-                if (info == null)
-                {
-                    model.ErrorMessage = "Error loading external login information.";
-                    return RedirectToPage("Login", model);
-                }
-
-                // Sign in the user with this external login provider if the user already has a login.
-                var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor : true);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
-                    return LocalRedirect(model.ReturnUrl);
-                }
-                if (result.IsLockedOut)
-                {
-                    return RedirectToPage("./Lockout");
-                }
-                else
-                {
-                    // If the user does not have an account, then ask the user to create an account.
-                    model.ProviderDisplayName = info.ProviderDisplayName;
-                    if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
-                    {
-                        model.Input = new ExternalLoginModel.InputModel
-                        {
-                            Email = info.Principal.FindFirstValue(ClaimTypes.Email)
-                        };
-                    }
-                }
-
         
-
-                // Get the information about the user from the external login provider
-                if (info == null)
-                {
-                    model.ReturnUrl = model.ReturnUrl;
-                    model.ErrorMessage = "Error loading external login information during confirmation.";
-                    return View("Login", model);
-                }
-            
-                var user = new ApplicationIdentityUser { UserName = model.Input.Email, Email = model.Input.Email };
-
-                var resultCreateUser = await _userManager.CreateAsync(user);
-                if (resultCreateUser.Succeeded)
-                {
-                    resultCreateUser = await _userManager.AddLoginAsync(user, info);
-                    if (resultCreateUser.Succeeded)
-                    {
-                        _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-
-                        var userId = await _userManager.GetUserIdAsync(user);
-                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                        var callbackUrl = Url.Page(
-                            "/Account/ConfirmEmail",
-                            pageHandler: null,
-                            values: new { area = "Identity", userId = userId, code = code },
-                            protocol: Request.Scheme);
-
-                        await _emailSender.SendEmailAsync(model.Input.Email, "Confirm your email",
-                            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                        // If account confirmation is required, we need to show the link if we don't have a real email sender
-                        if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                        {
-                            return RedirectToPage("./RegisterConfirmation", new { Email = model.Input.Email });
-                        }
-
-                        await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
-
-                        return LocalRedirect(model.ReturnUrl);
-                    }
-                }
-                foreach (var error in resultCreateUser.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-                
-                model.ProviderDisplayName = info.ProviderDisplayName;
-            }
-            return View(model);
-        }        
-
         public IActionResult Lockout() {
             return View();
         }
@@ -348,16 +235,6 @@ namespace webapp.Controllers
                 {
                     _logger.LogInformation("User logged in.");
                     return View("~/", model);
-                }
-                if (result.RequiresTwoFactor)
-                {
-                    LoginWith2faModel login2fa = new LoginWith2faModel();
-
-                    login2fa.ReturnUrl = model.ReturnUrl;
-                    login2fa.RememberMe = model.Input.RememberMe;
-
-
-                    return View("LoginWith2fa", login2fa);
                 }
                 if (result.IsLockedOut)
                 {
@@ -417,19 +294,6 @@ namespace webapp.Controllers
                              { "succeeded", "true"}
                          });
                 }
-                if (result.RequiresTwoFactor)
-                {
-                    LoginWith2faModel login2fa = new LoginWith2faModel();
-
-                    string returnUrl = "~/Account/LoginWith2fa";
-
-
-                     return new JsonResult( 
-                         new Dictionary<string,string>() { 
-                             { "url", returnUrl },
-                             { "succeeded", "false"}
-                         });
-                }
                 if (result.IsLockedOut)
                 {
                     _logger.LogWarning("User account locked out.");
@@ -460,99 +324,6 @@ namespace webapp.Controllers
 
         }
     
-
-        [AllowAnonymous]
-        public async Task<IActionResult> LoginWith2fa(LoginWith2faModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
-
-            model.ReturnUrl = model.ReturnUrl ?? Url.Content("~/");
-
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-            if (user == null)
-            {
-                throw new InvalidOperationException($"Unable to load two-factor authentication user.");
-            }
-
-            var authenticatorCode = model.Input.TwoFactorCode.Replace(" ", string.Empty).Replace("-", string.Empty);
-
-            var result = await _signInManager.TwoFactorAuthenticatorSignInAsync(authenticatorCode, model.RememberMe, model.Input.RememberMachine);
-
-            if (result.Succeeded)
-            {
-                _logger.LogInformation("User with ID '{UserId}' logged in with 2fa.", user.Id);
-                return LocalRedirect(model.ReturnUrl);
-            }
-            else if (result.IsLockedOut)
-            {
-                _logger.LogWarning("User with ID '{UserId}' account locked out.", user.Id);
-                return RedirectToPage("./Lockout");
-            }
-            else
-            {
-                _logger.LogWarning("Invalid authenticator code entered for user with ID '{UserId}'.", user.Id);
-                ModelState.AddModelError(string.Empty, "Invalid authenticator code.");
-                return View(model);
-            }
-        }
-
-        [AllowAnonymous]
-        public async Task<IActionResult> GetLoginWithRecoveryCodeAsync(string returnUrl = null)
-        {
-            LoginWithRecoveryCodeModel model = new LoginWithRecoveryCodeModel();
-
-            // Ensure the user has gone through the username & password screen first
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-            if (user == null)
-            {
-                throw new InvalidOperationException($"Unable to load two-factor authentication user.");
-            }
-
-            model.ReturnUrl = returnUrl;
-
-            return View();
-        }
-
-        [AllowAnonymous]
-        public async Task<IActionResult> PostLoginWithRecoveryCode(string returnUrl = null)
-        {
-            LoginWithRecoveryCodeModel model = new LoginWithRecoveryCodeModel();
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
-
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-            if (user == null)
-            {
-                throw new InvalidOperationException($"Unable to load two-factor authentication user.");
-            }
-
-            var recoveryCode = model.Input.RecoveryCode.Replace(" ", string.Empty);
-
-            var result = await _signInManager.TwoFactorRecoveryCodeSignInAsync(recoveryCode);
-
-            if (result.Succeeded)
-            {
-                _logger.LogInformation("User with ID '{UserId}' logged in with a recovery code.", user.Id);
-                return LocalRedirect(returnUrl ?? Url.Content("~/"));
-            }
-            if (result.IsLockedOut)
-            {
-                _logger.LogWarning("User with ID '{UserId}' account locked out.", user.Id);
-                return RedirectToPage("./Lockout");
-            }
-            else
-            {
-                _logger.LogWarning("Invalid recovery code entered for user with ID '{UserId}' ", user.Id);
-                ModelState.AddModelError(string.Empty, "Invalid recovery code entered.");
-                return View(model);
-            }
-        }
-
         public IActionResult SuccessfulLogout() {
             return View();
         }

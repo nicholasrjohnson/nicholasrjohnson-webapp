@@ -21,7 +21,7 @@ namespace webapp.Models
         public class InputModel
         {
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [RegularExpression(@"^((?=.*[A-Z])(?=.*\d)(?=.*[a-z])|(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])|(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])|(?=.*\d)(?=.*[a-z])(?=.*[!@#$%^&*-])).{15,}$", ErrorMessage = "Passwords must contain at least 1 of each the following: upper case (A-Z), lower case (a-z), number (0-9) and special character (e.g. !@#$%^&*) and must be at least 15 characters.")]
             [DataType(DataType.Password)]
             [Display(Name = "New password")]
             public string NewPassword { get; set; }

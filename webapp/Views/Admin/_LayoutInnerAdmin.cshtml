@@ -21,6 +21,7 @@
   <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="~/js/site.js" asp-append-version="true"></script>
   <script src="~/js/inner.js" asp-append-version="true"></script>
+  <script src="~/js/adminIndex.js" as-append-verson="true"></script>
   @RenderSection("Scripts", required: false)
 </head>
 <body>
@@ -61,24 +62,36 @@
     </div>
     <div class="col-sm-2 ms-auto p-2">
       <h2>Manage your account</h2>
-      <div>
+      <div id="settingsMenu">
         <h4>Change your account settings</h4>
         <hr />
         <ul class="nav nav-pills">
-          <li class="nav-item">@Html.ActionLink("Profile","AdminIndex","Admin", new { @class = "nav-link", id = "profile" } )</li>
-          <li class="nav-item">@Html.ActionLink("Change Email", "ChangeEmail", "Admin",  new {@class = "nav-link", id="email" })</li>
-          <li class="nav-item">@Html.ActionLink("Change Password", "ChangePassword", "Admin", new {@class = "nav-link", id="change-password"})</a></li>
+          <li class="nav-item">
+            <a class="nav-link" id="adminProfile" href="/Admin/AdminIndex">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="adminChangeEmail" href="/Admin/ChangeEmail">Change Email</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="adminChangePassword" href="/Admin/ChangePassword">Change Password</a>
+          </li>
           @if (hasExternalLogins)
           {
-            <li id="external-logins" class="nav-item">@Html.ActionLink("External logins", "ExternalLogins", "Admin", new { @class = "nav-link", id = "external-login" })</li>                   
+            <li id="external-logins" class="nav-item">
+              <a class="nav-link" id="adminExternalLogins" href="/Admin/ExternalLogins">External Logins</a>
+            </li>                   
           }
-          <li class="nav-item">@Html.ActionLink("Two-factor authentication", "TwoFactorAuthentication", "Admin", new { @class = "nav-link", id = "two-factor" })</li>
-          <li class="nav-item">@Html.ActionLink("Person Data", "PersonalData", "Admin", new { @class = "nav-link", id = "personal-data" })</li>
+          <li class="nav-item">
+            <a class="nav-link" id="adminTwoFactorAuthentication" href="/Admin/TwoFactorAuthentication">Two-Factor Authentication</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="adminPersonalData" href="/Admin/PersonalData">Personal Data</a>
+            </li>
         </ul>
     </div>
   </div>
     <footer class="container-fluid text-center" >
-      <p>&#x00A9;2021 Nicholas Johnson, All rights reserved</p>
+      <p>&#x00A9; Nicholas Johnson, All rights reserved</p>
     </footer>
   </div>
 </div>
