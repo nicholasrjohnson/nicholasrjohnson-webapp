@@ -31,9 +31,6 @@
       <p>
         @Html.ActionLink("Register as a new user", "Register", "Account", new { model = new RegisterModel() }, null)
       </p>
-      <p>
-        @Html.ActionLink("Resend email confirmation", "ResendEmailConfirmation", "Account")
-      </p>
     </div>
   </div>
     <script>
@@ -86,24 +83,6 @@
                 alert("login failed");
             });
         });
-      
-        //$("#registerButton").click( function() {
-          //  window.location.href = @Html.ActionLink("Register", "Account");
-            //var emailText = $("#email").val();
-            //var passwordText = $("#password").val();
-            //var rememberMeVal = Boolean($("#rememberMe"));
-
-            //var link = "/Ajax/RegisterAjax";
-
-            //var model = { Input: { Email: null, Password: null, ConfirmPassword: null},  ReturnUrl: null, ExternalLogins: null};
-
-            //$.ajax({
-            //    type: "POST",
-           //     url: link, 
-            //    data: JSON.stringify(model), 
-            //    dataType: "json"
-           //});
-        //});        
     });
 
 </script>
