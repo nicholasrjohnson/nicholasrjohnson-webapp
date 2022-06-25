@@ -12,12 +12,26 @@
   <script src="~/lib/jquery/dist/jquery.min.js"></script>
   <script src="~/lib/popper/popper.min.js"></script>
   <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="~/js/anime.js"></script>
   <script src="~/js/site.js" asp-append-version="true"></script>
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-	'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-	})(window,document,'script','dataLayer','GTM-TZ3SFN7');</script>
+  <!-- Cookie Consent by TermsFeed Privacy Policy and Consent Generator https://www.TermsFeed.com -->
+  <script type="text/javascript" src="https://www.termsfeed.com/public/cookie-consent/4.0.0/cookie-consent.js" charset="UTF-8"></script>
+  <script type="text/javascript" charset="UTF-8">
+    document.addEventListener('DOMContentLoaded', function () {
+      cookieconsent.run({"notice_banner_type":"interstitial","consent_type":"express","palette":"dark","language":"en","page_load_consent_levels":["strictly-necessary"],"notice_banner_reject_button_hide":false,"preferences_center_close_button_hide":false,"page_refresh_confirmation_buttons":false,"website_name":"nicholasrjohnson.com","website_privacy_policy_url":"https://nicholasrjohnson.com/Privacy"});
+    });
+  </script>
+
+  <!-- StrictCookies -->
+  <script type="text/plain" cookie-consent="strictly-necessary">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+	  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+	  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+	  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+	  })(window,document,'script','dataLayer','GTM-TZ3SFN7');</script>
+  <!-- end of StrictCookies-->
+ 
+    <noscript>ePrivacy and GPDR Cookie Consent management by <a href="https://www.TermsFeed.com/" rel="nofollow">TermsFeed Privacy Policy and Consent Generator</a></noscript>
+  <!-- End Cookie Consent by TermsFeed Privacy Policy and Consent Generator https://www.TermsFeed.com -->>
   @RenderSection("Scripts", required: false)
 </head>
 <body>
@@ -26,6 +40,7 @@
 	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	<!-- End Google Tag Manager (noscript) -->
 <div class="container-fluid">
+  <div class="container">
   <div class="row">
     <div class="col">
       <nav class="navbar navbar-expand-sm navbar-custom zone">
@@ -65,9 +80,10 @@
         </main>
 
         <footer class="container-fluid text-center" >
-        <p>&#x00A9; Nicholas Johnson, All rights reserved</p>
+        <p>&#x00A9; @DateTime.Now.Year Nicholas Johnson, All rights reserved</p>
       </footer>
     </div>
+  </div>
   </div>
 </div>
 
