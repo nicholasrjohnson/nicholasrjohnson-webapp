@@ -9,57 +9,38 @@ $(document).ready( function() {
     if (title == 'Nicholas R Johnson - Home')
     {
         $("#homeIdTop").css("color", "#76a3fb"); 
-        $("#homeIdSide").css("color", "#76a3fb"); 
         $("#aboutIdTop").css("color", "black"); 
-        $("#aboutIdSide").css("color", "black"); 
         $("#projectsIdTop").css("color", "black"); 
-        $("#projectsIdSide").css("color", "black"); 
         $("#contactIdTop").css("color", "black"); 
-        $("#contactIdSide").css("color", "black"); 
         $("#innerIdTop").css("color", "black");
-        $("#innerIdSide").css("color", "black")
     }
 
     if (title == 'Nicholas R Johnson - About')
     {
         $("#homeIdTop").css("color", "black"); 
-        $("#homeIdSide").css("color", "black"); 
         $("#aboutIdTop").css("color", "#76a3fb"); 
-        $("#aboutIdSide").css("color", "#76a3fb"); 
         $("#projectsIdTop").css("color", "black"); 
-        $("#projectsIdSide").css("color", "black"); 
         $("#contactIdTop").css("color", "black"); 
-        $("#contactIdSide").css("color", "black"); 
         $("#innerIdTop").css("color", "black");
-        $("#innerIdSide").css("color", "black");
     }
 
     if (title == 'Nicholas R Johnson - Contact')
     {
-        $("#homeIdSide").css("color", "black"); 
+        $("#homeIdTop").css("color", "black"); 
         $("#aboutIdTop").css("color", "black"); 
-        $("#aboutIdSide").css("color", "black"); 
         $("#projectsIdTop").css("color", "black"); 
-        $("#projectsIdSide").css("color", "black"); 
         $("#contactIdTop").css("color", "#76a3fb"); 
-        $("#contactIdSide").css("color", "#76a3fb"); 
         $("#innerIdTop").css("color", "black");
-        $("#innerIdSide").css("color", "black")
     }
 
     if (title == 'Nicholas R Johnson - Projects')
     {
         $(document).ready( function() {
             $("#homeIdTop").css("color", "black"); 
-            $("#homeIdSide").css("color", "black"); 
             $("#aboutIdTop").css("color", "black"); 
-            $("#aboutIdSide").css("color", "black"); 
             $("#projectsIdTop").css("color", "#76a3fb"); 
-            $("#projectsIdSide").css("color", "#76a3fb"); 
             $("#contactIdTop").css("color", "black"); 
-            $("#contactIdSide").css("color", "black"); 
             $("#innerIdTop").css("color", "black");
-            $("#innerIdSide").css("color", "black");
         });
     }
 

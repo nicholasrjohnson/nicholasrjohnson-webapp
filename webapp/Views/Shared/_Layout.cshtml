@@ -7,11 +7,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="google-site-verification" content="IKfOslUP52D3Qay_gbrA5rtWLUC2t3waF6RAQ6R737s" />
   <link rel="stylesheet" href="~/css/normalize.css" />
-	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/bootstrap-5.0.2/bootstrap.min.css" />
   <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
-  <script src="~/lib/jquery/dist/jquery.min.js"></script>
-  <script src="~/lib/popper/popper.min.js"></script>
-  <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="~/js/jquery.min.js"></script>
+  <script src="~/js/popper.min.js"></script>
+  <script src="~/js/bootstrap-5.0.2/bootstrap.min.js"></script>
   <script src="~/js/anime.js"></script>
   <script src="~/js/site.js" asp-append-version="true"></script>
   <!-- Cookie Consent by TermsFeed Privacy Policy and Consent Generator https://www.TermsFeed.com -->
@@ -46,15 +46,17 @@
       <nav class="navbar navbar-expand-sm navbar-custom zone">
          <div class="navbar-header">
             <a class="navbar-brand linktext" rel="home" href="#">Nicholas R Johnson</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-target="#navbarid" aria-controls="navbarid" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
          </div>
-         <div class="collapse navbar-collapse" id="myNavbar">
+         <div class="collapse navbar-collapse" id="navbarid">
            <ul class="navbar-nav d-flex mb-auto mt-0 ml-auto">
              <li class="nav-item"><a id="homeIdTop" class="nav-link py-0" href="/Home/Index">Home</a></li>
              <li class="nav-item"><a id="aboutIdTop" class="nav-link py-0" href="/Home/About">About</a></li>
              <li class="nav-item"><a id="projectsIdTop" class="nav-link py-0" href="/Home/Projects">Projects</a></li>
+             <li class="nav-item"><a class="nav-link py-0 linktext" href="https://blog.nicholasrjohnson.com">Blog</a></li>
+             <li class="nav-item"><a class="nav-link py-0 linktext" href="~/resources/NicholasRJohnsonResume.docx" download>Resume</a></li>
              <li class="nav-item"><a id="contactIdTop" class="nav-link py-0" href="/Home/Contact">Contact</a></li>
              <li class="nav-item"><a id="innerIdTop" class="nav-link py-0" href="/InnerSanctum/InnerSanctumIndex">Inner</a></li>
            </ul>
@@ -67,12 +69,6 @@
 
   <div class="row">
     <div class="col-sm-2 sidenav fullheight text-center zone" style="margin-top:20px; padding:15px;">
-      <p><a id="homeIdSide" href="/Home/Index">Home</a></p>
-      <p><a id="aboutIdSide" href="/Home/About">About</a></p>
-      <p><a id="projectsIdSide" href="/Home/Projects">Projects</a></p>
-      <p><a class="linktext" href="https://blog.nicholasrjohnson.com">Blog</a></p>
-      <p><a class="linktext" href="/resources/NicholasRJohnsonResume.docx" download>Resume</a></p>
-      <p><a id="contactIdSide" href="/Home/Contact">Contact</a></p>
       <div>
             @await Html.PartialAsync("~/Views/Shared/_LoginPartial.cshtml")
       </div>
