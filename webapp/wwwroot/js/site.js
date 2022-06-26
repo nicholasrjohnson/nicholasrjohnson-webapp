@@ -4,7 +4,8 @@
 // Write your JavaScript code.
 
 $(document).ready( function() {
-    var title = document.getElementsByTagName("title")[0];
+    var title = document.title;
+    alert(title);
     if (title == 'Nicholas R Johnson - Home')
     {
         $("#homeIdTop").css("color", "#76a3fb"); 
