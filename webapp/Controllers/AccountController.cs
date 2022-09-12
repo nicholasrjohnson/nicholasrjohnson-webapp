@@ -21,6 +21,12 @@ namespace webapp.Controllers
 {
     public class AccountController : Controller
     {       
+        /// <summary>
+        /// Used for XSRF protection when adding external logins.
+        /// </summary>
+        private const string XsrfKey = "XsrfId";
+
+
         private readonly UserManager<ApplicationIdentityUser> _userManager;
         private readonly SignInManager<ApplicationIdentityUser> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
@@ -133,8 +139,6 @@ namespace webapp.Controllers
 
                 return View("/Views/Account/ForgotPasswordConfirmation.cshtml");
             }
-
-            return View(model);
         }
 
         [HttpGet]
@@ -323,6 +327,136 @@ namespace webapp.Controllers
                          });
 
         }
+           /// <summary>
+        /// External login action method.
+        /// </summary>
+        /// <param name="provider">The external login provider.</param>
+        /// <param name="returnUrl">The return Url.</param>
+        /// <returns>The challenge result for the login.</returns>
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public IActionResult ExternalLogin(string provider, string returnUrl)
+        {
+            var redirectUrl = this.Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
+            var properties = this.signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            return new ChallengeResult(provider, properties);
+        }
+
+        /// <summary>
+        /// The external login callbakc method.
+        /// </summary>
+        /// <param name="returnUrl">The return Url.</param>
+        /// <returns>Returns a view whether success or failure.</returns>
+        [AllowAnonymous]
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null)
+        {
+            returnUrl = returnUrl ?? this.Url.Content("~/)");
+
+            var loginInfo = await this.signInManager.GetExternalLoginInfoAsync();
+            if (loginInfo == null)
+            {
+                this.ModelState.AddModelError(string.Empty, "Error loading external login information.");
+
+                return this.RedirectToAction("Login");
+            }
+
+            // Sign in the user with this external login provider if the user already has a login
+            var result = await this.signInManager.ExternalLoginSignInAsync(loginInfo.LoginProvider, loginInfo.ProviderKey, isPersistent: true);
+
+            if (result.Succeeded)
+            {
+                var email = this.User.Claims.Where(c => c.Type == ClaimTypes.Email).Select(c => c.Value).FirstOrDefault();
+                if (email != null)
+                {
+                    var user = await this.userManager.FindByEmailAsync(email);
+                    return this.RedirectToAction("Dashboard", "Admin");
+                }
+            }
+            else if (result.IsLockedOut)
+            {
+                return this.View("Lockout");
+            }
+            else if (result.RequiresTwoFactor)
+            {
+                return this.RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
+            }
+            else
+            {
+                var email = loginInfo.Principal.FindFirstValue(ClaimTypes.Email);
+
+                if (email != null)
+                {
+                    var user = await this.userManager.FindByEmailAsync(email);
+                    this.ViewBag.LoginProvider = loginInfo.LoginProvider;
+
+                    var returnModel = new ExternalLoginConfirmationViewModel { Email = email, Provider = loginInfo.LoginProvider, LoginKey = loginInfo.ProviderKey };
+
+                    await this.userManager.AddLoginAsync(user, loginInfo);
+                    await this.signInManager.SignInAsync(user, isPersistent: true);
+
+                    return this.RedirectToAction("Dashboard", "Admin");
+                }
+            }
+
+            return this.RedirectToAction("Login");
+        }
+
+        /// <summary>
+        /// Logging in with email.
+        /// </summary>
+        /// <param name="model">The email confirmation model.</param>
+        /// <param name="returnUrl">The return Url.</param>
+        /// <param name="command">The commmand.</param>
+        /// <returns>The view upon success or failure.</returns>
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async System.Threading.Tasks.Task<IActionResult> ExternalLoginEmail(ExternalLoginConfirmationViewModel model, string returnUrl, string command)
+        {
+            if (this.ModelState.IsValid)
+            {
+                // Get the information about the user from the external login provider
+                ExternalLoginInfo info = await this.signInManager.GetExternalLoginInfoAsync();
+                if (info == null)
+                {
+                    return this.View("ExternalLoginFailure");
+                }
+
+                if (command == "Go back")
+                {
+                    return this.View("Login");
+                }
+
+                else
+                {
+                    return this.View("ExternalLoginRetry");
+                }
+
+                ApplicationUser user = await this.userManager.FindByNameAsync(model.LoginName);
+                var result = await this.userManager.AddLoginAsync(user, info);
+                if (result.Succeeded)
+                {
+                    await this.signInManager.SignInAsync(user, isPersistent: true);
+                    return this.RedirectToAction("Dashboard", "Admin");
+                }
+            }
+
+            this.ViewBag.ReturnUrl = returnUrl;
+            return this.View(model);
+        }
+
+        /// <summary>
+        /// Returns the external login failure view.
+        /// </summary>
+        /// <returns>Returns the view.</returns>
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult ExternalLoginFailure()
+        {
+            return this.View();
+        }
+
     
         public IActionResult SuccessfulLogout() {
             return View();
