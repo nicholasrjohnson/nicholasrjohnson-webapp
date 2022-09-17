@@ -8,7 +8,8 @@ body {
 
 .jumbotron {
   font-family: merriweather; 
-  background-color: #76a3fb;
+  background-color: #1f04a5;
+  color: #54504d;
   margin-top: 20px; 
   padding: 20px;
 }
@@ -33,40 +34,46 @@ html, .fullheight {
   border-radius: 0;
 }
 
+.navitem {
+  color:#b27c17; 
+}
+
 .row.content {height: 450px}
 
 .sidenav {
   font-family: futura;
   padding-top: 20px;
   font-size: 20px;
-  background-color: #c2c2c2;
+  background-color: #4f3318;
+  color: #ffffff;
   height: 100%;
 }
 
 .navbar-custom {
   font-family: futura;
-  background-color: #c2c2c2;
+  background-color: #4f3318;
+  color: #ffffff;
   font-size: 30px;
   padding-left: 55px;
   padding-right: 55px;
 }
 
 .linktext {
-  color: black;
+  color: #b27c17; 
 }
 
 .blurbdiv {
-  background-color: #ffffff;
+  background-color: #1f04a5;
   margin: 10px;
   padding: 15px;
 }
 
 .blurbtitle {
-  color: #111111;
+  color: #0f0e09;
 }
 
 .blurb {
-  color: #222222; 
+  color: #545041; 
   font-family: merriweather;
 }
 
@@ -75,8 +82,8 @@ footer {
   bottom: 0;
   position: fixed;
   width: 100%;
-  background-color: #555;
-  color: white;
+  background-color: #4f3318;
+  color: #ffffff;
   padding: 15px;
 }
 

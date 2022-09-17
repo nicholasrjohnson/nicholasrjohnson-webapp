@@ -8,78 +8,78 @@ $(document).ready( function() {
     alert(title);
     if (title == 'Nicholas R Johnson - Home')
     {
-        $("#homeIdTop").css("color", "#76a3fb"); 
-        $("#aboutIdTop").css("color", "black"); 
-        $("#projectsIdTop").css("color", "black"); 
-        $("#contactIdTop").css("color", "black"); 
-        $("#innerIdTop").css("color", "black");
+        $("#homeIdTop").css("color", "#efad32"); 
+        $("#aboutIdTop").css("color", "#b27c17"); 
+        $("#projectsIdTop").css("color", "#b27c17"); 
+        $("#contactIdTop").css("color", "#b27c17"); 
+        $("#innerIdTop").css("color", "#b27c17");
     }
 
     if (title == 'Nicholas R Johnson - About')
     {
-        $("#homeIdTop").css("color", "black"); 
-        $("#aboutIdTop").css("color", "#76a3fb"); 
-        $("#projectsIdTop").css("color", "black"); 
-        $("#contactIdTop").css("color", "black"); 
-        $("#innerIdTop").css("color", "black");
+        $("#homeIdTop").css("color", "#b27c17"); 
+        $("#aboutIdTop").css("color", "#efad32"); 
+        $("#projectsIdTop").css("color", "#b27c17"); 
+        $("#contactIdTop").css("color", "#b27c17"); 
+        $("#innerIdTop").css("color", "#b27c17");
     }
 
     if (title == 'Nicholas R Johnson - Contact')
     {
-        $("#homeIdTop").css("color", "black"); 
-        $("#aboutIdTop").css("color", "black"); 
-        $("#projectsIdTop").css("color", "black"); 
-        $("#contactIdTop").css("color", "#76a3fb"); 
-        $("#innerIdTop").css("color", "black");
+        $("#homeIdTop").css("color", "#b27c17"); 
+        $("#aboutIdTop").css("color", "#b27c17"); 
+        $("#projectsIdTop").css("color", "#b27c17"); 
+        $("#contactIdTop").css("color", "#efad32"); 
+        $("#innerIdTop").css("color", "#b27c17");
     }
 
     if (title == 'Nicholas R Johnson - Projects')
     {
         $(document).ready( function() {
-            $("#homeIdTop").css("color", "black"); 
-            $("#aboutIdTop").css("color", "black"); 
-            $("#projectsIdTop").css("color", "#76a3fb"); 
-            $("#contactIdTop").css("color", "black"); 
-            $("#innerIdTop").css("color", "black");
+            $("#homeIdTop").css("color", "#b27c17"); 
+            $("#aboutIdTop").css("color", "#b27c17"); 
+            $("#projectsIdTop").css("color", "#efad32"); 
+            $("#contactIdTop").css("color", "#b27c17"); 
+            $("#innerIdTop").css("color", "#b27c17");
         });
     }
 
     if (title == 'Nicholas R Johnson - Welcome In')
     {
         $("#homeIdTop").click(function() {
-            $("#homeIdTop").css("color", "#76a3fb"); 
-            $("#aboutIdTop").css("color", "black"); 
-            $("#projectsIdTop").css("color", "black"); 
-            $("#contactIdTop").css("color", "black"); 
-            $("#insideIdTop").css("color", "black");
+            $("#homeIdTop").css("color", "#efad32"); 
+            $("#aboutIdTop").css("color", "#b27c17"); 
+            $("#projectsIdTop").css("color", "#b27c17"); 
+            $("#contactIdTop").css("color", "#b27c17"); 
+            $("#insideIdTop").css("color", "#b27c17");
         });
         $("#aboutIdTop").click(function() {
-            $("#homeIdTop").css("color", "black"); 
-            $("#aboutIdTop").css("color", "#76a3fb"); 
-            $("#projectsIdTop").css("color", "black"); 
-            $("#contactIdTop").css("color", "black"); 
-            $("#insideIdTop").css("color", "black");
+            $("#homeIdTop").css("color", "#b27c17"); 
+            $("#aboutIdTop").css("color", "#efad32"); 
+            $("#projectsIdTop").css("color", "#b27c17"); 
+            $("#contactIdTop").css("color", "#b27c17"); 
+            $("#insideIdTop").css("color", "#b27c17");
         });
         $("#projectsIdTop").click(function() {
-            $("#homeIdTop").css("color", "black"); 
-            $("#aboutIdTop").css("color", "black"); 
-            $("#projectsIdTop").css("color", "#76a3fb"); 
-            $("#contactIdTop").css("color", "black"); 
-            $("#insideIdTop").css("color", "black");
+            $("#homeIdTop").css("color", "#b27c17"); 
+            $("#aboutIdTop").css("color", "#b27c17"); 
+            $("#projectsIdTop").css("color", "#efad32"); 
+            $("#contactIdTop").css("color", "#b27c17"); 
+            $("#insideIdTop").css("color", "#b27c17");
         });
         $("#contactIdTop").click(function() {
-            $("#homeIdTop").css("color", "black"); 
-            $("#aboutIdTop").css("color", "black"); 
-            $("#projectsIdTop").css("color", "black"); 
-            $("#contactIdTop").css("color", "#76a3fb"); 
-            $("#insideIdTop").css("color", "black");
+            $("#homeIdTop").css("color", "#b27c17"); 
+            $("#aboutIdTop").css("color", "#b27c17"); 
+            $("#projectsIdTop").css("color", "#b27c17"); 
+            $("#contactIdTop").css("color", "#efad32"); 
+            $("#insideIdTop").css("color", "#b27c17");
         });
         $("#insideIdTop").click(function() {
-            $("#homeIdTop").css("color", "black"); 
-            $("#aboutIdTop").css("color", "black"); 
-            $("#projectsIdTop").css("color", "black"); 
-            $("#contactIdTop").css("color", "black"); 
-            $("#insideIdTop").css("color", "#76a3fb");
+            $("#homeIdTop").css("color", "#b27c17"); 
+            $("#aboutIdTop").css("color", "#b27c17"); 
+            $("#projectsIdTop").css("color", "#b27c17"); 
+            $("#contactIdTop").css("color", "#b27c17"); 
+            $("#insideIdTop").css("color", "#efad32");
         });
     }
 

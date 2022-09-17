@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="microsoft.aspnetcore" Version="2.2.0" />
     <PackageReference Include="microsoft.aspnetcore.diagnostics.entityframeworkcore" Version="5.0.10" />
     <PackageReference Include="microsoft.aspnetcore.identity" Version="2.2.0" />
     <PackageReference Include="microsoft.aspnetcore.identity.entityframeworkcore" Version="5.0.10" />

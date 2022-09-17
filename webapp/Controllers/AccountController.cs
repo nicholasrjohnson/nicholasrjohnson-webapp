@@ -339,7 +339,7 @@ namespace webapp.Controllers
         public IActionResult ExternalLogin(string provider, string returnUrl)
         {
             var redirectUrl = this.Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
-            var properties = this.signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            var properties = this._signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return new ChallengeResult(provider, properties);
         }
 
@@ -353,7 +353,7 @@ namespace webapp.Controllers
         {
             returnUrl = returnUrl ?? this.Url.Content("~/)");
 
-            var loginInfo = await this.signInManager.GetExternalLoginInfoAsync();
+            var loginInfo = await this._signInManager.GetExternalLoginInfoAsync();
             if (loginInfo == null)
             {
                 this.ModelState.AddModelError(string.Empty, "Error loading external login information.");
@@ -362,15 +362,15 @@ namespace webapp.Controllers
             }
 
             // Sign in the user with this external login provider if the user already has a login
-            var result = await this.signInManager.ExternalLoginSignInAsync(loginInfo.LoginProvider, loginInfo.ProviderKey, isPersistent: true);
+            var result = await this._signInManager.ExternalLoginSignInAsync(loginInfo.LoginProvider, loginInfo.ProviderKey, isPersistent: true);
 
             if (result.Succeeded)
             {
                 var email = this.User.Claims.Where(c => c.Type == ClaimTypes.Email).Select(c => c.Value).FirstOrDefault();
                 if (email != null)
                 {
-                    var user = await this.userManager.FindByEmailAsync(email);
-                    return this.RedirectToAction("Dashboard", "Admin");
+                    var user = await this._userManager.FindByEmailAsync(email);
+                    return this.RedirectToAction("Index", "InnerSanctum");
                 }
             }
             else if (result.IsLockedOut)
@@ -387,15 +387,15 @@ namespace webapp.Controllers
 
                 if (email != null)
                 {
-                    var user = await this.userManager.FindByEmailAsync(email);
+                    var user = await this._userManager.FindByEmailAsync(email);
                     this.ViewBag.LoginProvider = loginInfo.LoginProvider;
 
-                    var returnModel = new ExternalLoginConfirmationViewModel { Email = email, Provider = loginInfo.LoginProvider, LoginKey = loginInfo.ProviderKey };
+                    var returnModel = new ExternalLoginConfirmationModel { Email = email, Provider = loginInfo.LoginProvider, LoginKey = loginInfo.ProviderKey };
 
-                    await this.userManager.AddLoginAsync(user, loginInfo);
-                    await this.signInManager.SignInAsync(user, isPersistent: true);
+                    await this._userManager.AddLoginAsync(user, loginInfo);
+                    await this._signInManager.SignInAsync(user, isPersistent: true);
 
-                    return this.RedirectToAction("Dashboard", "Admin");
+                    return this.RedirectToAction("Index", "InnerSanctum");
                 }
             }
 
@@ -412,33 +412,23 @@ namespace webapp.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async System.Threading.Tasks.Task<IActionResult> ExternalLoginEmail(ExternalLoginConfirmationViewModel model, string returnUrl, string command)
+        public async System.Threading.Tasks.Task<IActionResult> ExternalLoginEmail(ExternalLoginConfirmationModel model, string returnUrl, string command)
         {
             if (this.ModelState.IsValid)
             {
                 // Get the information about the user from the external login provider
-                ExternalLoginInfo info = await this.signInManager.GetExternalLoginInfoAsync();
+                ExternalLoginInfo info = await this._signInManager.GetExternalLoginInfoAsync();
                 if (info == null)
                 {
                     return this.View("ExternalLoginFailure");
                 }
 
-                if (command == "Go back")
-                {
-                    return this.View("Login");
-                }
-
-                else
-                {
-                    return this.View("ExternalLoginRetry");
-                }
-
-                ApplicationUser user = await this.userManager.FindByNameAsync(model.LoginName);
-                var result = await this.userManager.AddLoginAsync(user, info);
+                ApplicationIdentityUser user = await this._userManager.FindByNameAsync(model.LoginName);
+                var result = await this._userManager.AddLoginAsync(user, info);
                 if (result.Succeeded)
                 {
-                    await this.signInManager.SignInAsync(user, isPersistent: true);
-                    return this.RedirectToAction("Dashboard", "Admin");
+                    await this._signInManager.SignInAsync(user, isPersistent: true);
+                    return this.RedirectToAction("Index", "InnerSanctum");
                 }
             }
 
