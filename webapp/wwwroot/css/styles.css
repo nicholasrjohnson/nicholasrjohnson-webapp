@@ -1,5 +1,6 @@
 body {
   min-height: 400px;
+  font-family: Arial, sans-serif;
   margin-bottom: 100px;
   clear: both;
   background-color: #ffffff;
@@ -9,9 +10,14 @@ body {
 .jumbotron {
   font-family: merriweather; 
   background-color: #1f04a5;
-  color: #54504d;
+  color: #e1e9f7;
   margin-top: 20px; 
   padding: 20px;
+}
+
+.jumbotron-title
+{
+    font-family: Arial, sans-serif;
 }
 
 html, .fullheight {
@@ -28,16 +34,6 @@ html, .fullheight {
   box-shadow:rgba(0,0,0,0.8) 0px 5px 15px, inset rgba(0,0,0,0.15) 0px -10px 20px;
 }
 
-.navbar {
-  width: 100%;
-  margin-bottom: 0;
-  border-radius: 0;
-}
-
-.navitem {
-  color:#b27c17; 
-}
-
 .row.content {height: 450px}
 
 .sidenav {
@@ -45,17 +41,42 @@ html, .fullheight {
   padding-top: 20px;
   font-size: 20px;
   background-color: #4f3318;
-  color: #ffffff;
+  color: #b27c17;
   height: 100%;
 }
 
 .navbar-custom {
   font-family: futura;
   background-color: #4f3318;
-  color: #ffffff;
+  color: #b27c1f;
   font-size: 30px;
   padding-left: 55px;
   padding-right: 55px;
+  margin-bottom: 0;
+  border-radius: 0;
+}
+
+a {
+  color: #b27c1f;
+}
+
+a:link {
+  color: #b27c1f;
+  text-decoration: none;
+}
+
+a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  color: #efad32;
+  text-decoration: none;
+}
+
+
+a:active {
+  text-decoration: none;
 }
 
 .linktext {
@@ -69,12 +90,18 @@ html, .fullheight {
 }
 
 .blurbtitle {
-  color: #0f0e09;
+  color: #e1e9f7;
+  font-family: Arial, sans-serif;
 }
 
 .blurb {
-  color: #545041; 
+  color: #e1e9f7; 
   font-family: merriweather;
+}
+
+.blurb-button {
+  color: #e1e9f7;
+  font-family: Arial, sans-serif;
 }
 
 footer {
@@ -83,7 +110,7 @@ footer {
   position: fixed;
   width: 100%;
   background-color: #4f3318;
-  color: #ffffff;
+  color: #b27c1f;
   padding: 15px;
 }
 
@@ -98,4 +125,25 @@ img {
     height: auto;
    }
   .row.content { height:auto; }
+}
+.btn-primary {
+  background: #4f3318 !important;
+	border: 2px solid #4f3314 !important;
+	border-radius: 40px !important;
+	padding: 7px 10px 10px 10px !important;
+}
+
+.btn-primary:hover {
+	background-color: #9E6534 !important;
+	border-color: #efad32 !important;
+	font-weight: 700;
+	padding: 7px 10px 10px 10px !important;
+}
+.slide {
+  transform: translateY(200px);
+  animation: slide 1.75s ease forwards;
+}
+
+@keyframes slide {
+  to { transform: translateY(0); }
 }
