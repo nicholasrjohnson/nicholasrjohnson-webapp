@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Logging;
 using webapp.Models;
 
@@ -12,9 +13,11 @@ namespace webapp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IEmailSender _sender;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IEmailSender emailer)
         {
+            _sender = emailer;
             _logger = logger;
         }
 
@@ -45,6 +48,21 @@ namespace webapp.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public async void EmailMe(EmailMeModel model)
+        {
+            if (model.ValidSubmit.Equals(true))
+            {
+                try
+                {
+                    await _sender.SendEmailAsync("njohnson@nicholasrjohnson.com", "Message From Nicholas R Johnson website", $"This is the message: \n{model.Message} \n\n From {model.Name} with email {model.Email}");
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+            }
         }
     }
 }

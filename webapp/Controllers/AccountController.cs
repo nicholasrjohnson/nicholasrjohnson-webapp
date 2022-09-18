@@ -211,24 +211,8 @@ namespace webapp.Controllers
             return View();
         }
 
-        [AllowAnonymous]
-        public async Task<IActionResult> LoginBefore(LoginModel model)
-        {
-            if (!ModelState.IsValid) {
-                return View("~/", model);
-            }
-            else
-            {
-                model.ReturnUrl = model.ReturnUrl ?? Url.Content("~/");
-
-                model.ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-                if (!string.IsNullOrEmpty(model.ErrorMessage))
-                {
-                    ModelState.AddModelError(string.Empty, model.ErrorMessage);
-                }
 
                 // Clear the existing external cookie to ensure a clean login process
-                await _httpContextAccessor.HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
                 model.ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             
@@ -254,23 +238,6 @@ namespace webapp.Controllers
             // If we got this far, something failed, redisplay form
         }
 
-        public async Task<IActionResult> LogoutBefore(LogoutModel model) {
-            if(!ModelState.IsValid) {
-                model.ReturnUrl = "~/Account/SuccessfulLogout";
-                model = new LogoutModel();
-                return View("~/", model);
-            }
-            await _signInManager.SignOutAsync();
-            _logger.LogInformation("User logged out.");
-            if (model.ReturnUrl != null)
-            {
-                return LocalRedirect(model.ReturnUrl);
-            }
-            else
-            {
-                return View("~/", model);
-            }   
-        }
 
         [AllowAnonymous]
         public async Task<IActionResult> Login(string email, string password, bool rememberMe)
@@ -290,6 +257,22 @@ namespace webapp.Controllers
                 var result = await _signInManager.PasswordSignInAsync(email, password, rememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    //Login with cookie
+                    var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
+
+                   identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, email));
+
+                   var principal = new ClaimsPrincipal(identity);
+
+                   var authProperties = new AuthenticationProperties
+                   {
+                        AllowRefresh = true,
+                        ExpiresUtc = DateTimeOffset.Now.AddMinutes(60),
+                        IsPersistent = true,
+                   };
+
+                    await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(principal),authProperties);
+
                     _logger.LogInformation("User logged in.");
                     
                      return new JsonResult( 
@@ -320,6 +303,7 @@ namespace webapp.Controllers
 
         public async Task<IActionResult> Logout() {
             await _signInManager.SignOutAsync();
+            await _httpContextAccessor.HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
             _logger.LogInformation("User logged out.");
                         return new JsonResult( 
                          new Dictionary<string,string>() { 
@@ -327,12 +311,7 @@ namespace webapp.Controllers
                          });
 
         }
-           /// <summary>
-        /// External login action method.
-        /// </summary>
-        /// <param name="provider">The external login provider.</param>
-        /// <param name="returnUrl">The return Url.</param>
-        /// <returns>The challenge result for the login.</returns>
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -343,11 +322,6 @@ namespace webapp.Controllers
             return new ChallengeResult(provider, properties);
         }
 
-        /// <summary>
-        /// The external login callbakc method.
-        /// </summary>
-        /// <param name="returnUrl">The return Url.</param>
-        /// <returns>Returns a view whether success or failure.</returns>
         [AllowAnonymous]
         public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null)
         {
@@ -402,13 +376,6 @@ namespace webapp.Controllers
             return this.RedirectToAction("Login");
         }
 
-        /// <summary>
-        /// Logging in with email.
-        /// </summary>
-        /// <param name="model">The email confirmation model.</param>
-        /// <param name="returnUrl">The return Url.</param>
-        /// <param name="command">The commmand.</param>
-        /// <returns>The view upon success or failure.</returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -436,10 +403,6 @@ namespace webapp.Controllers
             return this.View(model);
         }
 
-        /// <summary>
-        /// Returns the external login failure view.
-        /// </summary>
-        /// <returns>Returns the view.</returns>
         [AllowAnonymous]
         [HttpGet]
         public IActionResult ExternalLoginFailure()
