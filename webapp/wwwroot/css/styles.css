@@ -27,13 +27,9 @@ html, .fullheight {
 .zone {
   text-align: center;
   border:1px solid #bbb;
+  box-shadow:rgba(0,0,0,0.8) 0px 5px 15px, inset rgba(0,0,0,0.15) 0px -10px 20px;
   transition: all 0.3s linear;
 }
-
-.zone {
-  box-shadow:rgba(0,0,0,0.8) 0px 5px 15px, inset rgba(0,0,0,0.15) 0px -10px 20px;
-}
-
 .row.content {height: 450px}
 
 .sidenav {
@@ -54,6 +50,19 @@ html, .fullheight {
   padding-right: 55px;
   margin-bottom: 0;
   border-radius: 0;
+}
+
+.nav-link { 
+  color: #b27c1f;
+}
+
+.nav-link:hover {
+  color: #efad32;
+}
+
+.active
+{
+  color: #efad32 !important;
 }
 
 a {

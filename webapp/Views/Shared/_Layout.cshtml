@@ -25,9 +25,8 @@
   	<link rel="stylesheet" href="~/css/bootstrap-5.0.2/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
     <script src="~/js/jquery.min.js"></script>
-    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/popper.min.js" asp-append-version="true"></script>
     <script src="~/js/bootstrap-5.0.2/bootstrap.min.js"></script>
-    <script src="~/js/anime.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <!-- Cookie Consent by TermsFeed Privacy Policy and Consent Generator https://www.TermsFeed.com -->
     <script type="text/javascript" src="https://www.termsfeed.com/public/cookie-consent/4.0.0/cookie-consent.js" charset="UTF-8"></script>
@@ -53,7 +52,7 @@
       <!-- end of Login Related Cookies-->
       <noscript>
         ePrivacy and GPDR Cookie Consent by www.TermsFeed.com TermsFeed Generator
-      </noscript>>
+      </noscript>
       @RenderSection("Scripts", required: false)
   </head>
   <body>
@@ -73,13 +72,13 @@
             </div>
             <div class="collapse navbar-collapse" id="navbarid">
               <ul class="navbar-nav nav justify-content-center mb-auto mt-0 ml-auto" style="justify-content: center; display: flex; flex-wrap: wrap;">
-                <li class="nav-item"><a id="homeIdTop" class="nav-link py-0" href="/Home/Index">Home</a></li>
+                <li class="nav-item"><a id="homeIdTop" class="nav-link  py-0" href="/Home/Index">Home</a></li>
                 <li class="nav-item"><a id="aboutIdTop" class="nav-link py-0" href="/Home/About">About</a></li>
                 <li class="nav-item"><a id="projectsIdTop" class="nav-link py-0" href="/Home/Projects">Projects</a></li>
                 <li class="nav-item"><a class="nav-link py-0 linktext" href="https://blog.nicholasrjohnson.com">Blog</a></li>
                 <li class="nav-item"><a class="nav-link py-0 linktext" href="~/resources/NicholasRJohnsonResume.docx" download>Resume</a></li>
-                <li class="nav-item"><a id="innerIdTop" class="nav-link py-0" href="/InnerSanctum/InnerSanctumIndex">Members</a></li>
-                <li class="nav-item"><a id="contactIdTop" class="nav-link py-0" href="/Home/Contact">Contact</a></li>
+                <li class="nav-item"><a id="innerIdTop" class="nav-link nav-link-color py-0" href="/InnerSanctum/InnerSanctumIndex">Members</a></li>
+                <li class="nav-item"><a id="contactIdTop" class="nav-link nav-link-color py-0" href="/Home/Contact">Contact</a></li>
               </ul>
             </div>
           </nav>

@@ -50,7 +50,7 @@ namespace webapp.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public async void EmailMe(EmailMeModel model)
+        public async Task<IActionResult> EmailMe(EmailMeModel model)
         {
             if (model.ValidSubmit.Equals(true))
             {
@@ -63,6 +63,7 @@ namespace webapp.Controllers
                     throw e;
                 }
             }
+            return this.RedirectToAction("Index", "Home");
         }
     }
 }

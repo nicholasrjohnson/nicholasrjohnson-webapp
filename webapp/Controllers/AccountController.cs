@@ -212,33 +212,6 @@ namespace webapp.Controllers
         }
 
 
-                // Clear the existing external cookie to ensure a clean login process
-
-                model.ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Input.Email, model.Input.Password, model.Input.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User logged in.");
-                    return View("~/", model);
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return View("~/", model);
-                }
-            }
-            // If we got this far, something failed, redisplay form
-        }
-
-
         [AllowAnonymous]
         public async Task<IActionResult> Login(string email, string password, bool rememberMe)
         {
@@ -258,7 +231,7 @@ namespace webapp.Controllers
                 if (result.Succeeded)
                 {
                     //Login with cookie
-                    var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
+                    var identity = new ClaimsIdentity("www.nicholasrjohnson.cookie", ClaimTypes.Name, ClaimTypes.Role);
 
                    identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, email));
 
@@ -271,7 +244,7 @@ namespace webapp.Controllers
                         IsPersistent = true,
                    };
 
-                    await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(principal),authProperties);
+                    await _httpContextAccessor.HttpContext.SignInAsync("www.nicholasrjohnson.cookie", new ClaimsPrincipal(principal),authProperties);
 
                     _logger.LogInformation("User logged in.");
                     

@@ -86,7 +86,7 @@
 
 $(document).ready(function() {   
     $(window).scroll(function(event) {
-      $(".blurbdiv ").each(function(i, el) {
+      $(".blurbdiv").each(function(i, el) {
         var el = $(el);
         if (el.visible(true)) {
           el.addClass("slide"); 
@@ -94,40 +94,43 @@ $(document).ready(function() {
       });
     });
 
+    var element = document.getElementsByTagName("title")[0];
+    var title = element.textContent;
+
     if (title == 'Nicholas R Johnson - Home')
     {
-        $("#homeIdTop").css("color", "#efad32"); 
-        $("#aboutIdTop").css("color", "#b27c17"); 
-        $("#projectsIdTop").css("color", "#b27c17"); 
-        $("#contactIdTop").css("color", "#b27c17"); 
-        $("#innerIdTop").css("color", "#b27c17");
+        $("#homeIdTop").addClass("active"); 
+        $("#aboutIdTop").removeClass("active"); 
+        $("#projectsIdTop").removeClass("active"); 
+        $("#contactIdTop").removeClass("active"); 
+        $("#innerIdTop").removeClass("active");
     }
 
     if (title == 'Nicholas R Johnson - About')
     {
-        $("#homeIdTop").css("color", "#b27c17"); 
-        $("#aboutIdTop").css("color", "#efad32"); 
-        $("#projectsIdTop").css("color", "#b27c17"); 
-        $("#contactIdTop").css("color", "#b27c17"); 
-        $("#innerIdTop").css("color", "#b27c17");
+        $("#homeIdTop").removeClass("active"); 
+        $("#aboutIdTop").addClass("active"); 
+        $("#projectsIdTop").removeClass("active"); 
+        $("#contactIdTop").removeClass("active"); 
+        $("#innerIdTop").removeClass("active");
     }
 
     if (title == 'Nicholas R Johnson - Contact')
     {
-        $("#homeIdTop").css("color", "#b27c17"); 
-        $("#aboutIdTop").css("color", "#b27c17"); 
-        $("#projectsIdTop").css("color", "#b27c17"); 
-        $("#contactIdTop").css("color", "#efad32"); 
-        $("#innerIdTop").css("color", "#b27c17");
+        $("#homeIdTop").removeClass("active"); 
+        $("#aboutIdTop").removeClass("active"); 
+        $("#projectsIdTop").removeClass("active"); 
+        $("#contactIdTop").addClass("active"); 
+        $("#innerIdTop").removeClass("active");
     }
 
     if (title == 'Nicholas R Johnson - Projects')
     {
-        $("#homeIdTop").css("color", "#b27c17"); 
-        $("#aboutIdTop").css("color", "#b27c17"); 
-        $("#projectsIdTop").css("color", "#efad32"); 
-        $("#contactIdTop").css("color", "#b27c17"); 
-        $("#innerIdTop").css("color", "#b27c17");
+        $("#homeIdTop").removeClass("active"); 
+        $("#aboutIdTop").removeClass("active"); 
+        $("#projectsIdTop").addClass("active"); 
+        $("#contactIdTop").removeClass("active"); 
+        $("#innerIdTop").removeClass("active");
     }
 
     if (title == 'Nicholas R Johnson - Welcome In')
