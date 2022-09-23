@@ -211,10 +211,24 @@ namespace webapp.Controllers
             return View();
         }
 
+        public IActionResult InvalidLogin()
+        {
+            return View();
+        }
 
         [AllowAnonymous]
         public async Task<IActionResult> Login(string email, string password, bool rememberMe)
         {
+                if (email == null)
+                {
+                    email = string.Empty;
+                }
+
+                if (password == null)
+                {
+                    password = string.Empty;
+                }
+
                 IList<AuthenticationScheme> externalLogins  = null;
                 string indexUrl = Url.Content("~/Home/Index");
 
@@ -222,12 +236,13 @@ namespace webapp.Controllers
               
                 // Clear the existing external cookie to ensure a clean login process
                 await _httpContextAccessor.HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+                await _httpContextAccessor.HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
                 externalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToArray();
             
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(email, password, rememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(email, password, rememberMe, false);
                 if (result.Succeeded)
                 {
                     //Login with cookie
@@ -259,7 +274,7 @@ namespace webapp.Controllers
                     _logger.LogWarning("User account locked out.");
                     return new JsonResult( 
                          new Dictionary<string,string>() { 
-                             { "url", "~/Account/Lockout" },
+                             { "url", "/Account/Lockout" },
                              { "succeeded", "false"}
                          });
                  }
@@ -267,7 +282,7 @@ namespace webapp.Controllers
                 {
             return new JsonResult( 
                          new Dictionary<string,string>() { 
-                             { "url", "InvalidLogin" },
+                             { "url", "/Account/InvalidLogin" },
                              { "succeeded", "false"}
                          });
                   }
@@ -276,13 +291,14 @@ namespace webapp.Controllers
 
         public async Task<IActionResult> Logout() {
             await _signInManager.SignOutAsync();
-            await _httpContextAccessor.HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+             await _httpContextAccessor.HttpContext.SignOutAsync(
+                "www.nicholasrjohnson.cookie");
+            _httpContextAccessor.HttpContext.Session.Clear();
             _logger.LogInformation("User logged out.");
-                        return new JsonResult( 
-                         new Dictionary<string,string>() { 
-                             { "succeeded", "true"}
-                         });
-
+            return new JsonResult( 
+            new Dictionary<string,string>() { 
+              { "succeeded", "true"}
+            });
         }
 
         [HttpPost]

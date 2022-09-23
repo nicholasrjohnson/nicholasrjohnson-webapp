@@ -1,42 +1,70 @@
 @{
   ViewData["Title"] = "Nicholas R Johnson - Projects";
 }
-<div class="jumbotron jumbotron-fluid zone"> 
-  <h2 jumbotron-title">Projects</h2>
-  <h5 class="text-left">
-    I work on various projects from using Java to C#. My main focus lately has been .NET Framework 4 Applications and DotNetCore 
-    web applications. As I have done things in the private and government sector before, I am now developing my own 
-    portfolio. I have many ideas I would like to share, and I'm filling my GitHub repositories with code. 
-  <img src="~/images/machine.jpg" asp-append-version="true"/>
-</div>
-<div class="row-md-15 text-center"> 
-  <div class="col">
-    <div class="row">
-      <div class="col zone blurbdiv" id="rideshareId">
-        <h2 class="blurbtitle">Rideshare</h2>
-        <p class="blurb">I started developing this rideshare for a friend with a more specific purpose in mind. At the time, 
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <div class="container">
+        <div class="exhibit zone" style="font-family: merriweather; margin-top: 20px;">
+          <h2 class="exhibit-title">
+            Projects
+          </h2>
+          <h6 class="text-left">
+            I work on various projects from using Java to C#. My main focus lately has been .NET Framework 4 Applications and DotNetCore 
+            web applications. As I have done things in the private and government sector before, I am now developing my own 
+            portfolio. I have many ideas I would like to share, and I'm filling my GitHub repositories with code. 
+          </h6>
+          <img src="~/images/machine.jpg" asp-append-version="true"/>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row"> 
+    <div class="col-md-4">
+      <div class="zone blurbdiv">
+        <h2 class="blurbtitle">
+          Rideshare
+        </h2>
+        <p class="blurb">
+          I started developing this rideshare for a friend with a more specific purpose in mind. At the time, 
           it was hard for me to find the time to work on it. Now, without my friend, I have decided to make the project my own 
           and make the rideshare for everyone it general. It uses Dotnet Core 5.0</p>
-        <p><a class="btn btn-primary blurb-button" href="https://github.com/nicholasrjohnson/rideshare" role="button">GitHub Link</a></p>
+        <p>
+          <a class="btn btn-primary blurb-button" href="https://github.com/nicholasrjohnson/rideshare" role="button">GitHub Link</a></p>
       </div>
-      <div class="col zone blurbdiv" id="commentsId">
+    </div> 
+    <div class="col-md-4">
+      <div class="zone blurbdiv">
         <h2 class="blurbtitle">Caffeinated Comments</h2>
         <p class="blurb">
           I am working on a commenting system for blog apps like Ghost with a friend of mine, Joe Esposito. 
           It currently uses Django and will be hosted on Heroku. It will allow people to put a tag in their sites 
           that will allow them to have a commenting system with whatever format they want, even emulating major 
           sites like Reddit or Slashdot.
-        <p><a class="btn btn-primary blurb-button" href="https://github.com/nicholasrjohnson/caffeinated_comments" role="button">GitHub Link</a></p>
+        <p>
+          <a class="btn btn-primary blurb-button" href="https://github.com/nicholasrjohnson/caffeinated_comments" role="button">
+            GitHub Link
+          </a>
+        </p>
       </div>
-      <div class="col zone blurbdiv" id="signalrId">
-        <h2 class="blurbtitle">Signal R</h2>
-        <p class="blurb">In addition, one of my projects has been developed as a testing ground for ideas with Signal R at work. It alters a Bar Graph in realtime using alteration in a SQL Server table.</p>
-        <p><a class="btn btn-primary blurb-button" href="https://github.com/nicholasrjohnson/signalrchamps" role="button">GITHub Link</a></p>
+    </div>
+    <div class="col-md-4">
+      <div class="zone blurbdiv">
+        <h2 class="blurbtitle">
+          Signal R
+        </h2>
+        <p class="blurb">
+          In addition, one of my projects has been developed as a testing ground for ideas with Signal R at work.
+          It alters a Bar Graph in realtime using alteration in a SQL Server table.
+        <p>
+          <a class="btn btn-primary blurb-button" href="https://github.com/nicholasrjohnson/signalrchamps" role="button">
+            GITHub Link
+          </a>
+        </p>
       </div>
     </div>
   </div>
 </div>
 
 @section Scripts {
-  <script src="~/js/projects.js" asp-append-version="true"></script>
 }

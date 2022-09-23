@@ -5,47 +5,56 @@
 <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
         async defer>
 </script>
-<div class="jumbotron jumbotron-fluid zone"> 
-  <h2 class="jumbotron-title">Contact Me</h2>
-  @using (Html.BeginForm("EmailMe", "Home", FormMethod.Post, new { id = "form", style="padding: 20px" }))
-  {
-     <div style="color:#ff0000;">
-       @Html.ValidationSummary()
-     </div>
-     @Html.HiddenFor(m => m.ValidSubmit, new { id = "validField" })
-     <div class="row justify-context-center">
-       <div class="col">
-         <div class="form-group">
-           <label for="inputName" class="sr-only">Name</label>
-           @Html.TextBoxFor(m => m.Name, new { @class = "form-control", id = "name", type = "text", style = "padding: 20px;", placeholder="Enter your name", maxlength="100" })
-         </div>
-       </div>
-     </div>
-     <div class="row justify-context-center">
-       <div class="col">
-         <div class="form-group">
-           <label for="inputEmailSend" class="sr-only">Email address</label>
-           @Html.TextBoxFor(m => m.Email, new { @class = "form-control", id = "email", type = "text", style = "padding: 20px;", placeholder="Enter your email address", maxlength="100" })
-         </div>
-       </div>
-     </div>
-     <div class="row justify-context-center">
-       <div class="col">
-         <div class="form-group">
-             <label for="inputMessage" class="sr-only">Message</label>
-             @Html.TextAreaFor(m => m.Message, new { @class = "form-control", id = "message", style = "padding: 20px;", placeholder = "Enter your message", maxlength="1000" })
-         </div>
-       </div>
-     </div>
-     <div class="row justify-content-end">
-        <div class="col">
-          <div class="form-group">
-            <button class="btn btn-primary blurb-button" id="mailbutton" type="submit" onclick="validSubmit();">Send</button>
-          </div>
-          <div id="captcha"></div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <div class="container">
+        <div class="exhibit zone" style="font-family: merriweather; margin-top: 20px;">
+          <h2 class="exhibit-title">
+            Contact Me
+          </h2>
+          @using (Html.BeginForm("EmailMe", "Home", FormMethod.Post, new { id = "form", style="padding: 20px" }))
+          {
+            <div style="color:#ff0000;">
+              @Html.ValidationSummary()
+            </div>
+            @Html.HiddenFor(m => m.ValidSubmit, new { id = "validField" })
+            <div class="row justify-context-center">
+              <div class="col">
+                <div class="form-group">
+                   <label for="inputName" class="sr-only">Name</label>
+                   @Html.TextBoxFor(m => m.Name, new { @class = "form-control", id = "name", type = "text", style = "padding: 20px;", placeholder="Enter your name", maxlength="100" })
+                </div>
+              </div>
+            </div>
+            <div class="row justify-context-center">
+              <div class="col">
+                <div class="form-group">
+                  <label for="inputEmailSend" class="sr-only">Email address</label>
+                  @Html.TextBoxFor(m => m.Email, new { @class = "form-control", id = "email", type = "text", style = "padding: 20px;", placeholder="Enter your email address", maxlength="100" })
+                </div>
+              </div>
+            </div>
+            <div class="row justify-context-center">
+              <div class="col">
+                <div class="form-group">
+                  <label for="inputMessage" class="sr-only">Message</label>
+                  @Html.TextAreaFor(m => m.Message, new { @class = "form-control", id = "message", style = "padding: 20px;", placeholder = "Enter your message", maxlength="1000" })
+                </div>
+              </div>
+            </div>
+            <div class="row justify-content-end">
+              <div class="col">
+                <div class="form-group">
+                  <button class="btn btn-primary blurb-button m-2" id="mailbutton" type="submit" onclick="validSubmit();">Send</button>
+                </div>
+                <div class="m-1" id="captcha"></div>
+              </div>
+            </div>
+          }
         </div>
-     </div>
-  }
+      </div> 
+   </div>
 </div>
 
 @section Scripts {

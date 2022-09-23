@@ -7,38 +7,31 @@ body {
   padding-bottom: 80px;
 }
 
-.jumbotron {
+.exhibit {
   font-family: merriweather; 
   background-color: #1f04a5;
-  color: #e1e9f7;
+  color: #fcdb46;
   margin-top: 20px; 
-  padding: 20px;
+  padding: 25px;
 }
 
-.jumbotron-title
+.exhibit-title
 {
     font-family: Arial, sans-serif;
 }
 
-html, .fullheight {
-  min-height: 100% !important;
-  height: 100%;
-}
 .zone {
   text-align: center;
   border:1px solid #bbb;
   box-shadow:rgba(0,0,0,0.8) 0px 5px 15px, inset rgba(0,0,0,0.15) 0px -10px 20px;
   transition: all 0.3s linear;
 }
-.row.content {height: 450px}
 
 .sidenav {
   font-family: futura;
-  padding-top: 20px;
   font-size: 20px;
   background-color: #4f3318;
   color: #b27c17;
-  height: 100%;
 }
 
 .navbar-custom {
@@ -58,6 +51,14 @@ html, .fullheight {
 
 .nav-link:hover {
   color: #efad32;
+}
+.custom-toggler.navbar-toggler {
+  border-color: #efad32;
+}
+
+.custom-toggler .navbar-toggler-icon {
+  background-image: url(
+"data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(179, 134, 4, 0.8)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
 }
 
 .active
@@ -94,22 +95,22 @@ a:active {
 
 .blurbdiv {
   background-color: #1f04a5;
-  margin: 10px;
   padding: 15px;
+  margin-top: 10px;
 }
 
 .blurbtitle {
-  color: #e1e9f7;
+  color: #fcdb46;
   font-family: Arial, sans-serif;
 }
 
 .blurb {
-  color: #e1e9f7; 
+  color: #fcdb46; 
   font-family: merriweather;
 }
 
 .blurb-button {
-  color: #e1e9f7;
+  color: #efad32;
   font-family: Arial, sans-serif;
 }
 
@@ -123,18 +124,18 @@ footer {
   padding: 15px;
 }
 
+.textboxstyle {
+  height: 20px;
+  width: 125px;
+}
+
 img {
   width: 100%;
   height: auto;
   margin: 20px;
+  padding: 15px;
 }
 
-@media screen and (max-width: 767px) {
-  .sidenav {
-    height: auto;
-   }
-  .row.content { height:auto; }
-}
 .btn-primary {
   background: #4f3318 !important;
 	border: 2px solid #4f3314 !important;
@@ -145,6 +146,20 @@ img {
 .btn-primary:hover {
 	background-color: #9E6534 !important;
 	border-color: #efad32 !important;
+	font-weight: 700;
+	padding: 7px 10px 10px 10px !important;
+}
+
+.btn-secondary {
+  background: #9E6534 !important;
+	border: 2px solid #efad32 !important;
+	border-radius: 40px !important;
+	padding: 7px 10px 10px 10px !important;
+}
+
+.btn-secondary:hover {
+	background-color: #efad32 !important;
+	border-color:#9E6534 !important;
 	font-weight: 700;
 	padding: 7px 10px 10px 10px !important;
 }
