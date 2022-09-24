@@ -181,6 +181,7 @@
                 {
                   $("#Login").show();
                   $("#Logout").hide();
+                  window.location.href = returnUrl;
                 }
             }).fail( function() {
                 alert("logout failed");
@@ -205,6 +206,7 @@
                 if( succeeded == 'true' ) {
                     $("#Login").hide();
                     $("#Logout").show();
+                    window.location.href = returnUrl;
                 } else {
                     window.location.href = returnUrl;
                 }

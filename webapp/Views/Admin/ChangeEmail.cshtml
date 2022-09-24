@@ -3,10 +3,8 @@
     ViewData["Title"] = "Nicholas R Johnson - Admin";
 }
 
-<div class="container-fluid" style="margin-top: 200px; margin-bottom: 200px;">
+<div class="container-fluid" style="margin-top: 100px; margin-bottom: 100px;">
     <div class="container">
-        <div class="row">
-            <div class="col-md-4">
                 <h4>@ViewData["Title"]</h4>
                 <form id="email-form" method="post">
                 <div asp-validation-summary="All" class="text-danger">
@@ -35,10 +33,5 @@
                 </div>
                 <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="btn btn-primary">Change email</button>
             </form>
-        </div>
     </div>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

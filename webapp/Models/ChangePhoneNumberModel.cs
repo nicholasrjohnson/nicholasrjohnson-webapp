@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
  
  namespace webapp.Models
  {
-     public class AdminIndexModel {
+     public class ChangePhoneNumberModel {
         public string Username { get; set; }
 
         [TempData]
@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
         [BindProperty]
         public InputModel Input { get; set; }
 
-        public AdminIndexModel() {
+        public ChangePhoneNumberModel() {
             this.Input = new InputModel();
         }
         

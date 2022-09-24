@@ -93,12 +93,7 @@
                 <div id="Logout">
                     <div>
                       <p>
-                        <a id="innerIdSide" href="/InnerSanctum/InnerSanctumIndex">Members</a>
-                      </p>
-                    </div>
-                    <div>
-                      <p>
-                        <button id="logoutButton" class="nav-link btn btn-link text-dark">Click here to Logout</button>
+                        <button id="logoutButton" class="btn btn-secondary m-2 p-2">Logout</button>
                       </p>
                     </div>
                   </div>
@@ -123,7 +118,7 @@
                     </div>
                     <div>
                       <p>
-                        <button class="btn btn-secondary" id="loginButton">Log in</button>
+                        <button class="btn btn-secondary m-2 p-2" id="loginButton">Log in</button>
                       </p>
                     </div>
                     <div>
@@ -206,8 +201,11 @@
                 if( succeeded == 'true' ) {
                     $("#Login").hide();
                     $("#Logout").show();
-                } else {
                     window.location.href = returnUrl;
+                } 
+                else
+                {
+                  window.location.href = returnUrl;
                 }
             }).fail( function() {
                 alert("login failed");

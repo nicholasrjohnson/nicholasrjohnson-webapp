@@ -262,7 +262,7 @@ namespace webapp.Controllers
                     
                      return new JsonResult( 
                          new Dictionary<string,string>() { 
-                             { "url", "" },
+                             { "url", "/Members/MembersIndex" },
                              { "succeeded", "true"}
                          });
                 }

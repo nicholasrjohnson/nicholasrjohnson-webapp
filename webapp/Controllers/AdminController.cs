@@ -48,15 +48,8 @@ namespace webapp.Controllers
             _httpContextAccessor = httpContextAccessor;
         } 
 
-        public async Task<IActionResult> AdminIndex() {
-            AdminIndexModel model = new AdminIndexModel();
-            var user = await _userManager.GetUserAsync(User);
-            
-            model = await LoadAdminIndexAsync(user);
-            return View(model); 
-        }
-
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> ChangePassword()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -77,6 +70,7 @@ namespace webapp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
         {
             if (!ModelState.IsValid)
@@ -114,6 +108,7 @@ namespace webapp.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> SetPassword()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -134,6 +129,7 @@ namespace webapp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> SetPassword(SetPasswordModel model)
         {
             if (!ModelState.IsValid)
@@ -164,21 +160,21 @@ namespace webapp.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> DeletePersonalData()
         {
-            DeletePersonalDataModel model = new DeletePersonalDataModel();
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            model.RequirePassword = await _userManager.HasPasswordAsync(user);
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeletePersonalData(DeletePersonalDataModel model)
         {
             if (!ModelState.IsValid)
@@ -216,6 +212,9 @@ namespace webapp.Controllers
             return Redirect("~/");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DownloadPersonalData()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -245,6 +244,7 @@ namespace webapp.Controllers
             return new FileContentResult(JsonSerializer.SerializeToUtf8Bytes(personalData), "application/json");
         }
 
+        [Authorize]
         private async Task<ChangeEmailModel> LoadEmailAsync(ApplicationIdentityUser user)
         {
             ChangeEmailModel model = new ChangeEmailModel();
@@ -262,6 +262,9 @@ namespace webapp.Controllers
             return model;
         }
 
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        [HttpPost]
         public async Task<IActionResult> ChangeEmail(ChangeEmailModel model)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -300,6 +303,7 @@ namespace webapp.Controllers
             return View(model);
         }
 
+        [Authorize]
         public async Task<IActionResult> SendVerificationEmail()
         {
             ChangeEmailModel model = new ChangeEmailModel();
@@ -333,24 +337,17 @@ namespace webapp.Controllers
             return View("~/Views/Admin/ChangeEmail.cshtml", model);
         }
 
-        private async Task<AdminIndexModel> LoadAdminIndexAsync(ApplicationIdentityUser user)
+        [Authorize]
+        [HttpGet]
+        public IActionResult ChangePhoneNumber()
         {
-            AdminIndexModel model = new AdminIndexModel();
-
-            var userName = await _userManager.GetUserNameAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
-            model.Username = userName;
-
-            model.Input = new AdminIndexModel.InputModel
-            {
-                PhoneNumber = phoneNumber
-            };
-
-            return model;
+            return View();
         }
 
-        public async Task<IActionResult> SaveAdminIndex(AdminIndexModel model)
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePhoneNumber(ChangePhoneNumberModel model)
         {  
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -360,8 +357,7 @@ namespace webapp.Controllers
 
             if (!ModelState.IsValid)
             {
-                model = await LoadAdminIndexAsync(user);
-                return View("~/Views/Admin/AdminIndex.cshtml", model);
+                return View("~/Views/Admin/AdminIndex.cshtml");
             }
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
@@ -371,15 +367,17 @@ namespace webapp.Controllers
                 if (!setPhoneResult.Succeeded)
                 {
                     model.StatusMessage = "Unexpected error when trying to set phone number.";
-                    return View("~/Views/Admin/AdminIndex.cshtml", model);
+                    return View("~/Views/Admin/AdminIndex.cshtml");
                 }
             }
 
             await _signInManager.RefreshSignInAsync(user);
             model.StatusMessage = "Your profile has been updated";
-            return View("~/Views/Admin/AdminIndex.cshtml", model);
+            return View("~/Views/Admin/ChangePhoneNumber.cshtml");
         }
 
+        [Authorize]
+        [HttpGet]
         public async Task<IActionResult> PersonalData()
         {
             var user = await _userManager.GetUserAsync(User);

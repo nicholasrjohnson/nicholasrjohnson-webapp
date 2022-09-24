@@ -205,18 +205,16 @@
                 if( succeeded == 'true' ) {
                     $("#Login").hide();
                     $("#Logout").show();
-                } else {
                     window.location.href = returnUrl;
+                } 
+                else
+                {
+                  window.location.href = returnUrl;
                 }
             }).fail( function() {
                 alert("login failed");
             });
           });
-
-        if(userAuthorized) {
-          $("#innerIdTop").show();
-        } else {
-          $("#innerTopId").hide();
         }
       });
     </script>
