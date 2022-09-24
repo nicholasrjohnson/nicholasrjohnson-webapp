@@ -136,7 +136,11 @@
                         @Html.ActionLink("Register", "Register", "Account", new { model = new RegisterModel() }, null)
                       </p>
                     </div>
-                  </div>
+                    <div>
+                      <p>
+                        @Html.ActionLink("Resend email confirmation", "ResendEmailConfirmation", "Account")
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div> 
