@@ -236,10 +236,7 @@ namespace webapp.Controllers
               
                 // Clear the existing external cookie to ensure a clean login process
                 await _httpContextAccessor.HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-                await _httpContextAccessor.HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-                externalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToArray();
-            
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(email, password, rememberMe, false);
@@ -259,7 +256,7 @@ namespace webapp.Controllers
                         IsPersistent = true,
                    };
 
-                    await _httpContextAccessor.HttpContext.SignInAsync("www.nicholasrjohnson.cookie", new ClaimsPrincipal(principal),authProperties);
+                    await _httpContextAccessor.HttpContext.SignInAsync("www.nicholasrjohnson.scheme", new ClaimsPrincipal(principal),authProperties);
 
                     _logger.LogInformation("User logged in.");
                     
@@ -292,7 +289,7 @@ namespace webapp.Controllers
         public async Task<IActionResult> Logout() {
             await _signInManager.SignOutAsync();
              await _httpContextAccessor.HttpContext.SignOutAsync(
-                "www.nicholasrjohnson.cookie");
+                "www.nicholasrjohnson.scheme");
             _httpContextAccessor.HttpContext.Session.Clear();
             _logger.LogInformation("User logged out.");
             return new JsonResult( 

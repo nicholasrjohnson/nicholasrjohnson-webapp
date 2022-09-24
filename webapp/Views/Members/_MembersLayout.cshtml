@@ -1,0 +1,220 @@
+﻿@using System.Text.Json;
+<!DOCTYPE html>
+<html lang="eng">
+
+  <head>
+    <title>@ViewData["Title"]</title>
+    <meta property="og:title" content="Nicholas R Johnson" />
+    <meta property="og:site_name" content="Nicholas R Johnson." />
+    <meta property="og:description" content="Nicholas R Johnson - A software engineer and investor." />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://www.nicholasrjohnson.com" />
+    <meta property="og:image" content="https://www.nicholasrjohnson.com/mtwashington.jpg" />
+    <meta property="og:type" content="website" /> 
+	  <meta charset="utf=8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" /> <!--shrink-to-fit is for Safari to restore pre-safari 9.0 behaviour-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="apple-touch-icon" sizes="180x180" href="~/images/favicon/favicon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="~/images/favicon/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="~/images/favicon/favicon-16x16.png" />
+    <link rel="manifest" href="~/images/favicon/site.webmanifest">
+    <link rel="mask-icon" href="~/images/favicon/chickenhat.svg" color="#76a3fb">
+    <meta name="msapplication-TileColor" content="#76a3fb">
+    <meta name="theme-color" content="#ffffff">
+	  <meta name="google-site-verification" content="IKfOslUP52D3Qay_gbrA5rtWLUC2t3waF6RAQ6R737s" />
+    <link rel="stylesheet" href="~/css/normalize.css" />
+  	<link rel="stylesheet" href="~/css/bootstrap-5.0.2/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/popper.min.js" asp-append-version="true"></script>
+    <script src="~/js/bootstrap-5.0.2/bootstrap.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- Cookie Consent by TermsFeed Privacy Policy and Consent Generator https://www.TermsFeed.com -->
+    <script type="text/javascript" src="https://www.termsfeed.com/public/cookie-consent/4.0.0/cookie-consent.js" charset="UTF-8"></script>
+    <!--Cookie Consent by TermsFeed www.TermsFeed.com) -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          cookieconsent.run({
+              "notice_banner_type": "headline",
+              "consent_type": "express",
+              "palette": "dark",
+              "language": "en",
+              "page_load_consent_levels": ["strictly-necessary"],
+              "notice_banner_reject_button_hide": false,
+              "preferences_center_close_button_hide": false,
+              "page_refresh_confirmation_buttons": false
+          });
+      });
+    </script>
+
+    <!-- Login Related Cookies -->
+    <script type="text/plain" cookie-consent="strictly-necessary">
+    </script>
+    <!-- end of Login Related Cookies-->
+    <noscript>
+      ePrivacy and GPDR Cookie Consent by www.TermsFeed.com TermsFeed Generator
+    </noscript>
+    @RenderSection("Scripts", required: false)
+  </head>
+  <body>
+	  <!-- Google Tag Manager (noscript) -->
+	  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TZ3SFN7"
+  	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+	  <!-- End Google Tag Manager (noscript) -->
+    <div class="container-fluid">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <nav class="navbar navbar-expand-lg navbar-custom zone ml-0 mr-0">
+              <a class="navbar-brand linktext" rel="home" href="/Home/Index">Nicholas R Johnson</a>
+              <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarid" aria-controls="navbarid" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarid">
+                 <ul class="navbar-nav nav justify-content-center">
+                    <li class="nav-item"><a id="homeIdTop" class="nav-link  py-0" href="/Home/Index">Home</a></li>
+                    <li class="nav-item"><a id="aboutIdTop" class="nav-link py-0" href="/Home/About">About</a></li>
+                    <li class="nav-item"><a id="projectsIdTop" class="nav-link py-0" href="/Home/Projects">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link py-0 linktext" href="https://blog.nicholasrjohnson.com">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link py-0 linktext" href="~/resources/NicholasRJohnsonResume.docx" download>Resume</a></li>
+                    <li class="nav-item"><a id="innerIdTop" class="nav-link nav-link-color py-0" href="/Members/MembersIndex">Members</a></li>
+                    <li class="nav-item"><a id="adminIdTop" href="/Admin/AdminIndex">Manage</a></li>
+                    <li class="nav-item"><a id="contactIdTop" class="nav-link nav-link-color py-0" href="/Home/Contact">Contact</a></li>
+                </ul>
+              </div>
+            </nav>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3">
+            <div class="flexbox">
+              <div class="sidenav zone mt-5 p-3 flex-column">
+                <div class="justify-content-start">
+                <div id="Logout">
+                    <div>
+                      <p>
+                        <a id="innerIdSide" href="/InnerSanctum/InnerSanctumIndex">Members</a>
+                      </p>
+                    </div>
+                    <div>
+                      <p>
+                        <button id="logoutButton" class="nav-link btn btn-link text-dark">Click here to Logout</button>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="container-fluid">
+                <div id="Login">
+                  <div class="container">
+                    <div>
+                      <h4>Log In</h4>
+                    </div>
+                    <div class="center">
+                      <label for="email">Email</label>
+                      <input type="text" class="textboxstyle" id="email" name="email"/>
+                    </div>
+                    <div class="center">
+                      <label for="password">Password</label>
+                      <input type="password" class="textboxstyle" id="password" name="password"/>
+                    </div>
+                    <div>
+                      <input id="rememberMe" type="checkbox"/>
+                      <label for="rememberMe">Remember Me </label>
+                    </div>
+                    <div>
+                      <p>
+                        <button class="btn btn-secondary" id="loginButton">Log in</button>
+                      </p>
+                    </div>
+                    <div>
+                      <p>
+                        @Html.ActionLink("Forgot your password", "ForgotPassword", "Account")
+                      </p>
+                    </div>
+                    <div>
+                      <p>
+                        @Html.ActionLink("Register", "Register", "Account", new { model = new RegisterModel() }, null)
+                      </p>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              </div> 
+            </div>
+          </div>
+          <div class="col-lg-9">
+            <main>
+              @RenderBody()
+            </main>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <footer class="container-fluid text-center" >
+              <p>&#x00A9; @DateTime.Now.Year Nicholas Johnson, All rights reserved</p>
+            </footer>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      $(document).ready( function() {
+        var userAuthorized = @User.Identity.IsAuthenticated.ToString().ToLower();
+   
+        if(userAuthorized) {
+          $("#Login").hide();
+          $("#Logout").show();
+        } else {
+          $("#Login").show();
+          $("#Logout").hide(); 
+        }
+
+        $("#logoutButton").click( function() {
+            $.ajax({
+                url: "/Account/Logout"
+            }).done(function(result) {
+                if(result.succeeded = 'true')
+                {
+                  $("#Login").show();
+                  $("#Logout").hide();
+                }
+            }).fail( function() {
+                alert("logout failed");
+            });
+        });
+   
+        $("#loginButton").click( function() {
+            var emailText = $("#email").val();
+            var passwordText = $("#password").val();
+            var rememberMeVal = Boolean($("#rememberMe"));
+            $.ajax({
+                type: "POST",
+                url: "/Account/Login",
+                data: {
+                    email: emailText,
+                    password: passwordText,
+                    rememberMe: rememberMeVal
+                }
+            }).done(function(result) {
+                var returnUrl = result.url;
+                var succeeded = result.succeeded;
+                if( succeeded == 'true' ) {
+                    $("#Login").hide();
+                    $("#Logout").show();
+                } else {
+                    window.location.href = returnUrl;
+                }
+            }).fail( function() {
+                alert("login failed");
+            });
+          });
+
+        if(userAuthorized) {
+          $("#innerIdTop").show();
+        } else {
+          $("#innerTopId").hide();
+        }
+      });
+    </script>
+  </body>
+</html>

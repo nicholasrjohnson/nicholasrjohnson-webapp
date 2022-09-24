@@ -84,7 +84,7 @@ namespace webapp
             );
 
            services.AddAuthentication()
-            .AddCookie("www.nichoalas.scheme", options =>
+            .AddCookie("www.nicholasrjohnson.scheme", options =>
             {
                 options.Cookie.Name = "www.nicholasrjohnson.cookie";
                 options.LoginPath = "/Account/Login";

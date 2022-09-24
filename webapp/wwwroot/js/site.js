@@ -136,39 +136,52 @@ $(document).ready(function() {
     if (title == 'Nicholas R Johnson - Welcome In')
     {
         $("#homeIdTop").click(function() {
-            $("#homeIdTop").css("color", "#efad32"); 
-            $("#aboutIdTop").css("color", "#b27c17"); 
-            $("#projectsIdTop").css("color", "#b27c17"); 
-            $("#contactIdTop").css("color", "#b27c17"); 
-            $("#insideIdTop").css("color", "#b27c17");
+            $("#homeIdTop").addClass("active");   
+            $("#aboutIdTop").removeClass("active"); 
+            $("#projectsIdTop").removeClass("active");  
+            $("#contactIdTop").removeClass("active");  
+            $("#adminIdTop").removeClass("active"); 
+            $("#innerIdTop").removeClass("active");
         });
         $("#aboutIdTop").click(function() {
-            $("#homeIdTop").css("color", "#b27c17"); 
-            $("#aboutIdTop").css("color", "#efad32"); 
-            $("#projectsIdTop").css("color", "#b27c17"); 
-            $("#contactIdTop").css("color", "#b27c17"); 
-            $("#insideIdTop").css("color", "#b27c17");
+            $("#homeIdTop").removeClass("active");
+            $("#aboutIdTop").addClass("active"); 
+            $("#projectsIdTop").removeClass("active");   
+            $("#contactIdTop").removeClass("active");   
+            $("#adminIdTop").removeClass("active");
+            $("#innerIdTop").removeClass("active"); 
         });
         $("#projectsIdTop").click(function() {
-            $("#homeIdTop").css("color", "#b27c17"); 
-            $("#aboutIdTop").css("color", "#b27c17"); 
-            $("#projectsIdTop").css("color", "#efad32"); 
-            $("#contactIdTop").css("color", "#b27c17"); 
-            $("#insideIdTop").css("color", "#b27c17");
+            $("#homeIdTop").removeClass("active");
+            $("#aboutIdTop").removeClass("active"); 
+            $("#projectsIdTop").addClass("active");   
+            $("#contactIdTop").removeClass("active");   
+            $("#adminIdTop").removeClass("active");
+            $("#innerIdTop").removeClass("active"); 
         });
         $("#contactIdTop").click(function() {
-            $("#homeIdTop").css("color", "#b27c17"); 
-            $("#aboutIdTop").css("color", "#b27c17"); 
-            $("#projectsIdTop").css("color", "#b27c17"); 
-            $("#contactIdTop").css("color", "#efad32"); 
-            $("#insideIdTop").css("color", "#b27c17");
+            $("#homeIdTop").removeClass("active");
+            $("#aboutIdTop").removeClass("active"); 
+            $("#projectsIdTop").removeClass("active");   
+            $("#contactIdTop").addClass("active");   
+            $("#adminIdTop").removeClass("active");
+            $("#innerIdTop").removeClass("active"); 
         });
-        $("#insideIdTop").click(function() {
-            $("#homeIdTop").css("color", "#b27c17"); 
-            $("#aboutIdTop").css("color", "#b27c17"); 
-            $("#projectsIdTop").css("color", "#b27c17"); 
-            $("#contactIdTop").css("color", "#b27c17"); 
-            $("#insideIdTop").css("color", "#efad32");
+        $("#innerIdTop").click(function() {
+            $("#homeIdTop").removeClass("active");
+            $("#aboutIdTop").removeClass("active"); 
+            $("#projectsIdTop").removeClass("active");   
+            $("#contactIdTop").removeClass("active");   
+            $("#adminIdTop").removeClass("active");
+            $("#innerIdTop").addClass("active"); 
+        });
+        $("#adminIdTop").click(function() {
+            $("#homeIdTop").removeClass("active");
+            $("#aboutIdTop").removeClass("active"); 
+            $("#projectsIdTop").removeClass("active");   
+            $("#contactIdTop").removeClass("active");   
+            $("#adminIdTop").addClass("active");
+            $("#innerIdTop").removeClass("active"); 
         });
     }
 
@@ -215,7 +228,7 @@ $(document).ready(function() {
             $('#adminTwoFactorAuthentication').addClass('active');
             $('#adminPersonalData').removeClass('active');
         });
-        $("#settingsMenu").live( "click", "@adminPersonalData", function() {
+        $("#settingsMenu").live( "click", "#adminPersonalData", function() {
             $('#adminProfile').removeClass('active');
             $('#adminChangeEmail').removeClass('active');
             $('#adminChangePassword').removeClass('active');

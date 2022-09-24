@@ -171,3 +171,6 @@ img {
 @keyframes slide {
   to { transform: translateY(0); }
 }
+input { 
+  font-size: 12px; 
+}
