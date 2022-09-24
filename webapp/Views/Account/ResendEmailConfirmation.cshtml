@@ -5,6 +5,7 @@
 
 <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
         async defer>
+</script>
 <div class="container-fluid" style="margin-top: 100px; margin-bottom: 100px;">
     <div class="container">
                 <h1>@ViewData["Title"]</h1>
@@ -17,10 +18,10 @@
                            <div asp-validation-summary="All" class="text-danger"></div>
                            <div class="form-group">
                                 <label asp-for="Input.Email"></label>
-                                <input asp-for="Input.Email" class="form-control" />
+                                <input asp-for="Input.Email" class="form-control" id="email"/>
                                 <span asp-validation-for="Input.Email" class="text-danger"></span>
                            </div>
-                           <button type="submit" class="btn btn-primary">Resend</button>
+                           <button type="submit" onclick="validSubmit()" class="btn btn-primary">Resend</button>
                            <div class="m-1" id="captcha"></div>
                      }
     </div>
@@ -30,7 +31,7 @@
   <script>
   var onloadCallback = function () {
     grecaptcha.render('captcha', {
-      'sitekey': '6LdrrgoiAAAAACcjlBhRlHOR6JkRit4REGSgXQyx'
+      'sitekey': '6Lf7iSYiAAAAAHqdtprpV-ZWMrUZLKB6d00teb4e'
     });
   };
 
@@ -39,12 +40,6 @@
     var valid = false;
     $("#validField").val(false);
     if (response.length && 
-        $("#message").val() != '' &&
-        $("#message").val() != null &&
-        $('#message').val().length < 1000 &&
-        $('#name').val().length < 100 &&
-        $("#name").val() != '' &&
-        $("#name").val() != null &&
         $("#email").val() != '' &&
         $("#email").val() != null &&
         $('#email').val().length < 50 &&
@@ -53,9 +48,9 @@
           valid = true;
           grecaptcha.reset();
         }
-  }
-  if (valid) {
-    $("#validField").val(true);
-  }
+    }
+    if (valid) {
+      $("#validField").val(true);
+    }
   </script>
 }

@@ -114,6 +114,12 @@ namespace webapp.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -125,19 +131,26 @@ namespace webapp.Controllers
             }
             else
             {
-                var user = await _userManager.FindByEmailAsync(model.Input.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                if (model.ValidSubmit.Equals(true))
                 {
-                    return View("/Views/Account/ForgotPasswordConfirmation.cshtml");
-                }
+                    var user = await _userManager.FindByEmailAsync(model.Input.Email);
+                    if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                    {
+                        return View("/Views/Account/ForgotPasswordConfirmation.cshtml");
+                    }
                 
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                var callbackUrl = Url.Action(nameof(ResetPassword), "Account", new {code, email = user.Email}, Request.Scheme);
-                await _emailSender.SendEmailAsync(
-                    model.Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    var callbackUrl = Url.Action(nameof(ResetPassword), "Account", new {code, email = user.Email}, Request.Scheme);
+                    await _emailSender.SendEmailAsync(
+                        model.Input.Email,
+                     "Reset Password",
+                        $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Must verify that you are a human.");
+                }
 
                 return View("/Views/Account/ForgotPasswordConfirmation.cshtml");
             }
@@ -207,20 +220,23 @@ namespace webapp.Controllers
             return View();
         }
 
-
+        [HttpGet]
         public IActionResult AccessDenied() {
             return View();
         }
-        
+
+        [HttpGet] 
         public IActionResult Lockout() {
             return View();
         }
 
+        [HttpGet]
         public IActionResult InvalidLogin()
         {
             return View();
         }
 
+        [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Login(string email, string password, bool rememberMe)
         {
@@ -282,7 +298,7 @@ namespace webapp.Controllers
                  }
                 else
                 {
-            return new JsonResult( 
+                     return new JsonResult( 
                          new Dictionary<string,string>() { 
                              { "url", "/Account/InvalidLogin" },
                              { "succeeded", "false"}
@@ -386,7 +402,7 @@ namespace webapp.Controllers
                 if (result.Succeeded)
                 {
                     await this._signInManager.SignInAsync(user, isPersistent: true);
-                    return this.RedirectToAction("Index", "InnerSanctum");
+                    return this.RedirectToAction("MembersIndex", "Members");
                 }
             }
 
@@ -406,46 +422,50 @@ namespace webapp.Controllers
             return View();
         }
 
+        [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterModel model)
         {
-            model.ReturnUrl = model.ReturnUrl ?? Url.Content("~/");
             model.ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)// && model != null)
             {
                 if (model.ValidSubmit.Equals(true))
                 {
-                var user = new ApplicationIdentityUser { UserName = model.Input.Email, Email = model.Input.Email };
-                var result = await _userManager.CreateAsync(user, model.Input.Password);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User created a new account with password.");
+                    var user = new ApplicationIdentityUser { UserName = model.Input.Email, Email = model.Input.Email };
+                    var result = await _userManager.CreateAsync(user, model.Input.Password);
+                    if (result.Succeeded)
+                    {
+                        _logger.LogInformation("User created a new account with password.");
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = model.ReturnUrl },
-                        protocol: Request.Scheme);
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                        var callbackUrl = Url.Page(
+                            "/Account/ConfirmEmail",
+                            pageHandler: null,
+                            values: new { area = "Identity", userId = user.Id, code = code, returnUrl = @Url.Content("https://nicholasrjohnson.com") },
+                            protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(model.Input.Email, "Confirm your email",
+                        await _emailSender.SendEmailAsync(model.Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return View("RegisterConfirmation", model);
+                       if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                       {
+                           return View("RegisterConfirmation", model);
+                       }
+                       else
+                       {
+                           await _signInManager.SignInAsync(user, isPersistent: false);
+                           return LocalRedirect("/Home/Index");
+                       }
                     }
-                    else
+                    foreach (var error in result.Errors)
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(model.ReturnUrl);
+                        ModelState.AddModelError(string.Empty, error.Description);
                     }
                 }
-                foreach (var error in result.Errors)
+                else
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                    ModelState.AddModelError(string.Empty, "Must verify that you are a human.");
                 }
 
                 model = new RegisterModel();
@@ -523,6 +543,10 @@ namespace webapp.Controllers
                 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                 ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
+            } 
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Must verify that you are a human.");
             }
 
             return View();
