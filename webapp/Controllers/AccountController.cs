@@ -48,6 +48,7 @@ namespace webapp.Controllers
         } 
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> ConfirmEmail(string userId, string code) {
             ConfirmEmailModel model = new ConfirmEmailModel();
             if(userId == null || code == null) {
@@ -69,6 +70,7 @@ namespace webapp.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> ConfirmEmailChange(string userId, string email, string code)
         {
             ConfirmEmailChangeModel model = new ConfirmEmailChangeModel();
@@ -147,6 +149,7 @@ namespace webapp.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult ResetPassword(string email, string code=null)
         {
             ResetPasswordModel model = new ResetPasswordModel();
@@ -168,6 +171,7 @@ namespace webapp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
         {
 
@@ -197,6 +201,7 @@ namespace webapp.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult ResetPasswordConfirmation()
         {
             return View();
@@ -408,6 +413,8 @@ namespace webapp.Controllers
             model.ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)// && model != null)
             {
+                if (model.ValidSubmit.Equals(true))
+                {
                 var user = new ApplicationIdentityUser { UserName = model.Input.Email, Email = model.Input.Email };
                 var result = await _userManager.CreateAsync(user, model.Input.Password);
                 if (result.Succeeded)
@@ -439,10 +446,11 @@ namespace webapp.Controllers
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
-            }
+                }
 
-            model = new RegisterModel();
-            // If we got this far, something failed, redisplay form
+                model = new RegisterModel();
+                // If we got this far, something failed, redisplay form
+                }
             return View(model);
         }
 
@@ -498,21 +506,25 @@ namespace webapp.Controllers
                 ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
                 return View();
             }
-
-            var userId = await _userManager.GetUserIdAsync(user);
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-            var callbackUrl = Url.Page(
-                "/Account/ConfirmEmail",
-                pageHandler: null,
-                values: new { userId = userId, code = code },
-                protocol: Request.Scheme);
-            await _emailSender.SendEmailAsync(
+            
+            if (model.ValidSubmit.Equals(true))
+            {
+                var userId = await _userManager.GetUserIdAsync(user);
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                var callbackUrl = Url.Page(
+                     "/Account/ConfirmEmail",
+                    pageHandler: null,
+                    values: new { userId = userId, code = code },
+                    protocol: Request.Scheme);
+                await _emailSender.SendEmailAsync(
                 model.Input.Email,
                 "Confirm your email",
                 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-            ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
+                ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
+            }
+
             return View();
         }
     }

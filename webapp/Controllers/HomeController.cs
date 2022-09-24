@@ -54,14 +54,7 @@ namespace webapp.Controllers
         {
             if (model.ValidSubmit.Equals(true))
             {
-                try
-                {
-                    await _sender.SendEmailAsync("njohnson@nicholasrjohnson.com", "Message From Nicholas R Johnson website", $"This is the message: \n{model.Message} \n\n From {model.Name} with email {model.Email}");
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                await _sender.SendEmailAsync("njohnson@nicholasrjohnson.com", "Message From Nicholas R Johnson website", $"This is the message: \n{model.Message} \n\n From {model.Name} with email {model.Email}");
             }
             return this.RedirectToAction("Index", "Home");
         }

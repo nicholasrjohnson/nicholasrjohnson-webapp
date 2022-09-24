@@ -3,11 +3,15 @@
     ViewData["Title"] = "Register";
 }
 
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+        async defer>
 <h1>@ViewData["Title"]</h1>
 
 <div class="container-fluid" style="margin-top: 100px; margin-bottom: 100px;">
     <div class="container">
                 <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.ValidSubmit, new { id = "validField" })
                     <h4>Create a new account.</h4>
                     <hr />
                     <div asp-validation-summary="All" class="text-danger"></div>
@@ -27,10 +31,41 @@
                         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                     </div>
                     <button type="submit" class="btn btn-primary">Register</button>
+                    <div class="m-1" id="captcha"></div>
                 </form>
     </div>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+  <script>
+  var onloadCallback = function () {
+    grecaptcha.render('captcha', {
+      'sitekey': '6LdrrgoiAAAAACcjlBhRlHOR6JkRit4REGSgXQyx'
+    });
+  };
+
+  function validSubmit() {
+    var response = grecaptcha.getResponse();
+    var valid = false;
+    $("#validField").val(false);
+    if (response.length && 
+        $("#message").val() != '' &&
+        $("#message").val() != null &&
+        $('#message').val().length < 1000 &&
+        $('#name').val().length < 100 &&
+        $("#name").val() != '' &&
+        $("#name").val() != null &&
+        $("#email").val() != '' &&
+        $("#email").val() != null &&
+        $('#email').val().length < 50 &&
+        RegExp(/[A-Za-z0-9._%+-]+@@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}/).test($('#email').val())) 
+        {
+          valid = true;
+          grecaptcha.reset();
+        }
+  }
+  if (valid) {
+    $("#validField").val(true);
+  }
+  </script>
 }

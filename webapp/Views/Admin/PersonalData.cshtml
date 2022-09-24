@@ -10,9 +10,12 @@
          <p>
              <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
          </p>
-         <form id="downloadData" asp-action="DownloadPersonalData" asp-controller="Admin" method="post" class="form-group">
+         @using (Html.BeginForm("DownloadPersonalData", "Admin", FormMethod.Post, new { id = "form", style="padding: 20px" }))
+         {
             <button class="btn btn-primary m-2 p-2" type="submit">Download</button>
-        </form>
+         }
+        <br>
+         <br>
          @Html.ActionLink("Delete Personal Data", "DeletePersonalData", "Admin", null, new { @class = "btn btn-primary m-2" })
     </div>
 </div>

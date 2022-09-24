@@ -6,7 +6,8 @@
 <div class="container-fluid" style="margin-top: 100px; margin-bottom: 100px;">
     <div class="container">
                 <h4>@ViewData["Title"]</h4>
-                <form id="email-form" method="post">
+                    @using (Html.BeginForm("ChangeEmail", "Admin", FormMethod.Post, new { id = "form", style="padding: 20px" }))
+                    {
                 <div asp-validation-summary="All" class="text-danger">
                 </div>
                 <div class="form-group">
@@ -32,6 +33,6 @@
                     <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
                 </div>
                 <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="btn btn-primary">Change email</button>
-            </form>
+            }  
     </div>
 </div>

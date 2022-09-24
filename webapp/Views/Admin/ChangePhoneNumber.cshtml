@@ -7,7 +7,8 @@
   <div class="container">
         <h4>@ViewData["Title"]</h4>
         <partial name="_StatusMessage" model="Model.StatusMessage" />
-        <form id="profileForm" asp-action="ChangePhoneNumber" asp-controller="Admin" method="post">
+        @using (Html.BeginForm("ChangePhoneNumber", "Admin", FormMethod.Post, new { id = "form", style="padding: 20px" }))
+        {
           <div asp-validation-summary="ModelOnly" class="text-danger">
           </div>
             <div class="form-group">
@@ -20,6 +21,6 @@
               <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
             <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
-        </form>
+        }
   </div>
 </div> 

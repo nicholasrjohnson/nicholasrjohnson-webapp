@@ -9,6 +9,8 @@ namespace webapp.Models
             this.Input = new InputModel();
         }
 
+        public bool ValidSubmit { get; set; }
+
         [BindProperty]
         public InputModel Input { get; set; }
 

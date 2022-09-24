@@ -14,6 +14,8 @@ namespace webapp.Models
         [BindProperty]
         public InputModel Input { get; set; }
 
+        public bool ValidSubmit { get; set; }
+
         public string ReturnUrl { get; set; }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
