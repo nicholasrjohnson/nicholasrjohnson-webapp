@@ -6,10 +6,10 @@
 <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
         async defer>
 </script>
-<h1>@ViewData["Title"]</h1>
 
 <div class="container-fluid" style="margin-top: 100px; margin-bottom: 100px;">
     <div class="container">
+      <h1>@ViewData["Title"]</h1>
           @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { id = "form", style="padding: 20px" }))
           {
             @Html.HiddenFor(m => m.ValidSubmit, new { id = "validField" })
@@ -18,12 +18,12 @@
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" id="email"/>
+                <input asp-for="Input.Email" class="form-control" id="emailfield"/>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                <label asp-for="Input.Password"></label>
-               <input asp-for="Input.Password" class="form-control" id="password"/>
+               <input asp-for="Input.Password" class="form-control" id="passwordfield"/>
                <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -38,7 +38,7 @@
 </div>
 
 @section Scripts {
-  <script>
+  <script type="text/javascript">
   var onloadCallback = function () {
     grecaptcha.render('captcha', {
       'sitekey': '6Lf7iSYiAAAAAHqdtprpV-ZWMrUZLKB6d00teb4e'
@@ -50,23 +50,21 @@
     var valid = false;
     $("#validField").val(false);
     if (response.length && 
-        $("#email").val() != '' &&
-        $("#email").val() != null &&
-        $('#email').val().length < 50 &&
-        $('#password').val().length < 100 &&
-        $("#password").val() != '' &&
-        $("#password").val() != null &&
+        $("#emailfield").val() != '' &&
+        $("#emailfield").val() != null &&
+        $('#emailfield').val().length < 50 &&
+        $('#passwordfield').val().length < 100 &&
+        $("#passwordfield").val() != '' &&
+        $("#passwordfield").val() != null &&
         $("#confirmpassword").val() != '' &&
         $("#confirmpassword").val() != null &&
         $('#confirmpassword').val().length < 100 &&
-        RegExp(/[A-Za-z0-9._%+-]+@@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}/).test($('#email').val())) 
+        RegExp(/[A-Za-z0-9._%+-]+@@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}/).test($('#emailfield').val())) 
     {
-      alert("In there");
       valid = true;
       grecaptcha.reset();
     } 
     if (valid) {
-       alert("Is Valid");
       $("#validField").val(true);
     }
   }

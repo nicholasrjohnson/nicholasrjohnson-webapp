@@ -18,7 +18,7 @@
                            <div asp-validation-summary="All" class="text-danger"></div>
                            <div class="form-group">
                                 <label asp-for="Input.Email"></label>
-                                <input asp-for="Input.Email" class="form-control" id="email"/>
+                                <input asp-for="Input.Email" class="form-control" id="emailfield"/>
                                 <span asp-validation-for="Input.Email" class="text-danger"></span>
                            </div>
                            <button type="submit" onclick="validSubmit()" class="btn btn-primary  blurb-button m-2 p-2">Resend</button>
@@ -40,10 +40,10 @@
     var valid = false;
     $("#validField").val(false);
     if (response.length && 
-        $("#email").val() != '' &&
-        $("#email").val() != null &&
-        $('#email').val().length < 50 &&
-        RegExp(/[A-Za-z0-9._%+-]+@@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}/).test($('#email').val())) 
+        $("#emailfield").val() != '' &&
+        $("#emailfield").val() != null &&
+        $('#emailfield').val().length < 50 &&
+        RegExp(/[A-Za-z0-9._%+-]+@@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}/).test($('#emailfield').val())) 
         {
           valid = true;
           grecaptcha.reset();

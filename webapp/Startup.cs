@@ -82,7 +82,6 @@ namespace webapp
             services.Configure<DataProtectionTokenProviderOptions>(opt =>
                 opt.TokenLifespan = TimeSpan.FromHours(2)
             );
-
            services.AddAuthentication()
             .AddCookie("www.nicholasrjohnson.scheme", options =>
             {
@@ -105,7 +104,6 @@ namespace webapp
             {
                 options.LoginPath = new PathString("/Home/Index");
                 options.ReturnUrlParameter = new PathString("/Admin/AdminIndex");
-                //other properties
             });
 
             var mvc = services.AddMvc();
