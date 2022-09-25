@@ -31,6 +31,8 @@ using webapp.Services;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.AspNetCore.DataProtection;
+using System.Security.Cryptography.X509Certificates;
+using System.Reflection;
 
 namespace webapp 
 {
@@ -86,12 +88,14 @@ namespace webapp
             services.AddDataProtection()
                 .PersistKeysToFileSystem(
                     new DirectoryInfo(@"/var/www/keys"))
+		.ProtectKeysWithCertificate(GetCertificate())
                 .UseCryptographicAlgorithms(
                     new AuthenticatedEncryptorConfiguration
                         {
                             EncryptionAlgorithm = EncryptionAlgorithm.AES_256_CBC,
                             ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
-                });
+		        }	
+		   );
 
             services.Configure<DataProtectionTokenProviderOptions>(opt =>
                 opt.TokenLifespan = TimeSpan.FromHours(2)
@@ -170,6 +174,21 @@ namespace webapp
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
+	private X509Certificate2 GetCertificate()
+	{
+		var assembly = typeof(Startup).GetTypeInfo().Assembly;
+		using (var stream = assembly.GetManifestResourceStream(
+					assembly.GetManifestResourceNames().First(r => r.EndsWith("nicholasrjohnson.pfx"))))
+		{
+			if (stream == null)
+				throw new ArgumentNullException(nameof(stream));
+
+			var bytes = new byte[stream.Length];
+			stream.Read(bytes, 0, bytes.Length);
+			return new X509Certificate2(bytes);
+		}
+	}
     }
 
     /// <summary>

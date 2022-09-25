@@ -20,4 +20,11 @@
     <PackageReference Include="sendgrid.core" Version="2.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+	  <None Remove="/var/www/keys/nicholasrjohnson.pfx" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <EmbeddedResource Include="/var/www/keys/nicholasrjohnson.pfx" />
+  </ItemGroup>
 </Project>
