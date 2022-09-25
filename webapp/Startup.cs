@@ -186,7 +186,7 @@ namespace webapp
 
 			var bytes = new byte[stream.Length];
 			stream.Read(bytes, 0, bytes.Length);
-			return new X509Certificate2(bytes);
+			return new X509Certificate2(bytes, _configuration["Keys:PFX"]);
 		}
 	}
     }
