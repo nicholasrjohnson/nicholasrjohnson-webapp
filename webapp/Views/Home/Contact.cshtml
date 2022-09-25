@@ -46,7 +46,7 @@
             <div class="row justify-content-end">
               <div class="col">
                 <div class="form-group">
-                  <button class="btn btn-primary blurb-button m-2" id="mailbutton" type="submit" onclick="validSubmit();">Send</button>
+                  <button class="btn btn-primary blurb-button m-2 p-2" id="mailbutton" type="submit" onclick="validSubmit();">Send</button>
                 </div>
                 <div class="m-1" id="captcha"></div>
               </div>
@@ -84,9 +84,10 @@
           valid = true;
           grecaptcha.reset();
         }
-  }
-  if (valid) {
-    $("#validField").val(true);
-  }
+        if (valid) {
+          $("#validField").val(true);
+        }
+      
+    } 
   </script>
 }

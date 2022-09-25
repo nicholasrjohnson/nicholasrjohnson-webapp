@@ -21,7 +21,7 @@
                                 <input asp-for="Input.Email" class="form-control" id="email"/>
                                 <span asp-validation-for="Input.Email" class="text-danger"></span>
                            </div>
-                           <button type="submit" onclick="validSubmit()" class="btn btn-primary">Resend</button>
+                           <button type="submit" onclick="validSubmit()" class="btn btn-primary  blurb-button m-2 p-2">Resend</button>
                            <div class="m-1" id="captcha"></div>
                      }
     </div>
@@ -48,9 +48,9 @@
           valid = true;
           grecaptcha.reset();
         }
-    }
     if (valid) {
       $("#validField").val(true);
     }
+  }
   </script>
 }

@@ -146,13 +146,15 @@ namespace webapp.Controllers
                         model.Input.Email,
                      "Reset Password",
                         $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    
+                    return View("/Views/Account/ForgotPasswordConfirmation.cshtml");
                 }
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Must verify that you are a human.");
                 }
-
-                return View("/Views/Account/ForgotPasswordConfirmation.cshtml");
+                
+                return View();
             }
         }
 
@@ -376,7 +378,7 @@ namespace webapp.Controllers
                     await this._userManager.AddLoginAsync(user, loginInfo);
                     await this._signInManager.SignInAsync(user, isPersistent: true);
 
-                    return this.RedirectToAction("Index", "InnerSanctum");
+                    return this.RedirectToAction("MembersIndex", "Members");
                 }
             }
 
