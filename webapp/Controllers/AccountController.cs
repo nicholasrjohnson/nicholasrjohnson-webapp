@@ -47,8 +47,7 @@ namespace webapp.Controllers
             _httpContextAccessor = httpContextAccessor;
         } 
 
-        [HttpPost]
-        [Authorize]
+        [HttpGet]
         public async Task<IActionResult> ConfirmEmail(string userId, string code) {
             ConfirmEmailModel model = new ConfirmEmailModel();
             if(userId == null || code == null) {
@@ -69,8 +68,7 @@ namespace webapp.Controllers
             return View(result.Succeeded ? "/Views/Account/ConfirmEmail.cshtml" : "/Views/Home/Error.cshtml");
         }
 
-        [HttpPost]
-        [Authorize]
+        [HttpGet]
         public async Task<IActionResult> ConfirmEmailChange(string userId, string email, string code)
         {
             ConfirmEmailChangeModel model = new ConfirmEmailChangeModel();
@@ -90,7 +88,7 @@ namespace webapp.Controllers
             var result = await _userManager.ChangeEmailAsync(user, email, code);
             if (!result.Succeeded)
             {
-                model.StatusMessage = "Error changing email.";
+                ViewBag.Message = "Error changing email.";
                 return View(model);
             }
 
@@ -99,12 +97,12 @@ namespace webapp.Controllers
             var setUserNameResult = await _userManager.SetUserNameAsync(user, email);
             if (!setUserNameResult.Succeeded)
             {
-                model.StatusMessage = "Error changing user name.";
+                ViewBag.Message = "Error changing user name.";
                 return View(model);
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            model.StatusMessage = "Thank you for confirming your email change.";
+            ViewBag.Message = "Thank you for confirming your email change.";
             return View(model);
         }
 
@@ -164,7 +162,6 @@ namespace webapp.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public IActionResult ResetPassword(string email, string code=null)
         {
             ResetPasswordModel model = new ResetPasswordModel();
@@ -186,7 +183,6 @@ namespace webapp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
         public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
         {
 
@@ -238,6 +234,12 @@ namespace webapp.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult ConfirmedEmailRequired()
+        {
+            return View();
+        }
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Login(string email, string password, bool rememberMe)
@@ -252,6 +254,32 @@ namespace webapp.Controllers
                     password = string.Empty;
                 }
 
+                if (_userManager.Options.SignIn.RequireConfirmedEmail)
+                {
+                    var user = await _userManager.FindByEmailAsync(email);
+                    bool emailConfirmed = false;
+
+                    if (user == null)
+                    {
+                        return new JsonResult( 
+                            new Dictionary<string,string>() { 
+                                { "url", "/Account/InvalidLogin" },
+                                { "succeeded", "false"}
+                            });
+
+                    }
+
+                    emailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+
+                    if (!emailConfirmed) {
+                        return new JsonResult( 
+                        new Dictionary<string,string>() { 
+                           { "url", "/Account/ConfirmedEmailRequired" },
+                           { "succeeded", "false"}
+                       });
+                    }
+                }
+                
                 IList<AuthenticationScheme> externalLogins  = null;
                 string indexUrl = Url.Content("~/Home/Index");
 
@@ -304,7 +332,7 @@ namespace webapp.Controllers
                          new Dictionary<string,string>() { 
                              { "url", "/Account/InvalidLogin" },
                              { "succeeded", "false"}
-                         });
+                     });
                   }
             // If we got this far, something failed, redisplay form
         }
@@ -317,6 +345,7 @@ namespace webapp.Controllers
             _logger.LogInformation("User logged out.");
             return new JsonResult( 
             new Dictionary<string,string>() { 
+              { "url", "/Home/Index" },
               { "succeeded", "true"}
             });
         }
@@ -439,26 +468,15 @@ namespace webapp.Controllers
                     {
                         _logger.LogInformation("User created a new account with password.");
 
+                        var userId = await _userManager.GetUserIdAsync(user);
+
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                        var callbackUrl = Url.Page(
-                            "/Account/ConfirmEmail",
-                            pageHandler: null,
-                            values: new { area = "Identity", userId = user.Id, code = code, returnUrl = @Url.Content("https://nicholasrjohnson.com") },
-                            protocol: Request.Scheme);
-
+                        var callbackUrl = Url.Action("ConfirmEmail", "Account", new {code, userId,  email = user.Email, returnUrl = @Url.Content("/Home/Index")}, Request.Scheme);
                         await _emailSender.SendEmailAsync(model.Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                       if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                       {
-                           return View("RegisterConfirmation", model);
-                       }
-                       else
-                       {
-                           await _signInManager.SignInAsync(user, isPersistent: false);
-                           return LocalRedirect("/Home/Index");
-                       }
+                        return View("RegisterConfirmation");
                     }
                     foreach (var error in result.Errors)
                     {
@@ -477,42 +495,9 @@ namespace webapp.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> RegisterConfirmation(RegisterModel model)
+        public IActionResult RegisterConfirmation(RegisterModel model)
         {
-            if (model.Input.Email == null)
-            {
-                return RedirectToPage("/Index");
-            }
-
-            var user = await _userManager.FindByEmailAsync(model.Input.Email);
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with email '{model.Input.Email}'.");
-            }
-
-            RegisterConfirmationModel registerModel = new RegisterConfirmationModel();
-
-            registerModel.Email = model.Input.Email;
-
-            // Once you add a real email sender, you should remove this code that lets you confirm the account
-            registerModel.DisplayConfirmAccountLink = true;
-            if (registerModel.DisplayConfirmAccountLink)
-            {
-                var userId = await _userManager.GetUserIdAsync(user);
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-               registerModel.EmailConfirmationUrl = Url.Page(
-                    "/Account/ConfirmEmail",
-                    pageHandler: null,
-                    values: new { area = "Identity", userId = userId, code = code, returnUrl = registerModel.EmailConfirmationUrl },
-              protocol: Request.Scheme);
-            }
-            else
-            {
-                registerModel = null;
-            }
-
-            return View(registerModel);
+            return View();
         }
 
         public async Task<IActionResult> ResendEmailConfirmation(ResendEmailConfirmationModel model)
@@ -534,11 +519,7 @@ namespace webapp.Controllers
                 var userId = await _userManager.GetUserIdAsync(user);
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                var callbackUrl = Url.Page(
-                     "/Account/ConfirmEmail",
-                    pageHandler: null,
-                    values: new { userId = userId, code = code },
-                    protocol: Request.Scheme);
+                var callbackUrl = Url.Action("ConfirmEmail", "Account", new {code, userId,  email = user.Email}, Request.Scheme);
                 await _emailSender.SendEmailAsync(
                 model.Input.Email,
                 "Confirm your email",

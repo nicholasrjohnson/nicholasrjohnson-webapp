@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Email confirmation is required";
+}
+
+<div class="container-fluid" style="margin-top: 100px; margin-bottom: 100px;">
+    <div class="container">
+        <h4>@ViewData["Title"]</h4>
+        Your email confirmation is required.
+        <div>
+            <p>
+                @Html.ActionLink("Resend email confirmation", "ResendEmailConfirmation", "Account", null, new { @class = "btn btn-primary blurb-button m-2 p-2" })
+            </p>
+        </div>
+    <div>
+</div>

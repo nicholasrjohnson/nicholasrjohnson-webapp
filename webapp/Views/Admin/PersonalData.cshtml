@@ -2,20 +2,19 @@
     ViewData["Title"] = "Nicholas R Johnson - Admin";
 }
 
-<h4>@ViewData["Title"]</h4>
 
 <div class="container-fluid" style="margin-top: 100px; margin-bottom: 100px;">
     <div class="container">
+        <h4>@ViewData["Title"]</h4>
          <p>Your account contains personal data that you have given us. This page allows you to download or delete that data.</p>
          <p>
              <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
          </p>
-         @using (Html.BeginForm("DownloadPersonalData", "Admin", FormMethod.Post, new { id = "form", style="padding: 20px" }))
+         @using (Html.BeginForm("DownloadPersonalData", "Admin", FormMethod.Post, new { id = "form" }))
          {
-            <button class="btn btn-primary m-2 p-2" type="submit">Download</button>
+            <button class="btn btn-primary blurb-button m-2 p-2" type="submit">Download</button>
          }
         <br>
-         <br>
-         @Html.ActionLink("Delete Personal Data", "DeletePersonalData", "Admin", null, new { @class = "btn btn-primary m-2" })
+         @Html.ActionLink("Delete Personal Data", "DeletePersonalData", "Admin", null, new { @class = "btn btn-primary blurb-button m-2" })
     </div>
 </div>

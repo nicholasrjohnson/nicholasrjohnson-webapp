@@ -16,11 +16,6 @@ namespace webapp.Models
 
         public string Email { get; set; }
 
-        public bool IsEmailConfirmed { get; set; }
-
-        [TempData]
-        public string StatusMessage { get; set; }
-
         [BindProperty]
         public InputModel Input { get; set; }
 

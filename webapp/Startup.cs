@@ -74,6 +74,7 @@ namespace webapp
                 options.Password.RequireUppercase = true;
                 options.Password.RequireNonAlphanumeric = true;
                 options.User.RequireUniqueEmail = true;
+                options.SignIn.RequireConfirmedEmail = true;
             })
                 .AddUserManager<UserManager<ApplicationIdentityUser>>()
                 .AddEntityFrameworkStores<ApplicationIdentityDbContext>()

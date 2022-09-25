@@ -97,7 +97,7 @@
                     </div>
                     <div>
                       <p>
-                        <button id="logoutButton" class="nav-link btn btn-link text-dark">Click here to Logout</button>
+                        <button id="logoutButton" class="btn btn-secondary m-2 p-2">Click here to Logout</button>
                       </p>
                     </div>
                   </div>
@@ -127,17 +127,12 @@
                     </div>
                     <div>
                       <p>
-                        @Html.ActionLink("Forgot your password", "ForgotPassword", "Account")
+                        @Html.ActionLink("Forgot your password", "ForgotPassword", "Account", null, new { @class = "sidenav-link" })
                       </p>
                     </div>
                     <div>
                       <p>
-                        @Html.ActionLink("Register", "Register", "Account", new { model = new RegisterModel() }, null)
-                      </p>
-                    </div>
-                    <div>
-                      <p>
-                        @Html.ActionLink("Resend email confirmation", "ResendEmailConfirmation", "Account")
+                        @Html.ActionLink("Register", "Register", "Account", new { model = new RegisterModel() }, new { @class = "sidenav-link"} )
                       </p>
                     </div>
                   </div>

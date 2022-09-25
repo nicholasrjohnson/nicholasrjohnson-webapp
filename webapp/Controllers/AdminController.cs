@@ -109,6 +109,13 @@ namespace webapp.Controllers
 
         [HttpGet]
         [Authorize]
+        public IActionResult AdminIndex()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize]
         public async Task<IActionResult> SetPassword()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -125,6 +132,13 @@ namespace webapp.Controllers
             }
 
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ChangeEmail()
+        {
+            ChangeEmailModel model = await LoadEmailAsync(await _userManager.GetUserAsync(User));
+            return View(model);
         }
 
         [HttpPost]
@@ -188,14 +202,10 @@ namespace webapp.Controllers
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            model.RequirePassword = await _userManager.HasPasswordAsync(user);
-            if (model.RequirePassword)
+            if (!await _userManager.CheckPasswordAsync(user, model.Input.Password))
             {
-                if (!await _userManager.CheckPasswordAsync(user, model.Input.Password))
-                {
-                    ModelState.AddModelError(string.Empty, "Incorrect password.");
-                    return View();
-                }
+                ModelState.AddModelError(string.Empty, "Incorrect password.");
+                return View();
             }
 
             var result = await _userManager.DeleteAsync(user);
@@ -257,12 +267,9 @@ namespace webapp.Controllers
                 NewEmail = email,
             };
 
-            model.IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
-
             return model;
         }
 
-        [Authorize]
         [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<IActionResult> ChangeEmail(ChangeEmailModel model)
@@ -285,21 +292,17 @@ namespace webapp.Controllers
                 var userId = await _userManager.GetUserIdAsync(user);
                 var code = await _userManager.GenerateChangeEmailTokenAsync(user, model.Input.NewEmail);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                var callbackUrl = Url.Page(
-                    "/Account/ConfirmEmailChange",
-                    pageHandler: null,
-                    values: new { userId = userId, email = model.Input.NewEmail, code = code },
-                    protocol: Request.Scheme);
+                var callbackUrl = Url.Action("ConfirmEmailChange", "Account", new {code, userId, email = model.Input.NewEmail}, Request.Scheme);
                 await _emailSender.SendEmailAsync(
                     model.Input.NewEmail,
                     "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                model.StatusMessage = "Confirmation link to change email sent. Please check your email.";
+                ViewBag.Message = "Confirmation link to change email sent. Please check your email.";
                 return View(model);
             }
 
-            model.StatusMessage = "Your email is unchanged.";
+            ViewBag.Message = "Your email is unchanged.";
             return View(model);
         }
 
@@ -323,25 +326,25 @@ namespace webapp.Controllers
             var email = await _userManager.GetEmailAsync(user);
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-            var callbackUrl = Url.Page(
-                "/Account/ConfirmEmail",
-                pageHandler: null,
-                values: new { userId = userId, code = code },
-                protocol: Request.Scheme);
+            var callbackUrl = Url.Action("ConfirmEmail", "Account", new {code, email = user.Email}, Request.Scheme);
             await _emailSender.SendEmailAsync(
                 email,
                 "Confirm your email",
                 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-            model.StatusMessage = "Verification email sent. Please check your email.";
+            ViewBag.Message = "Verification email sent. Please check your email.";
             return View("~/Views/Admin/ChangeEmail.cshtml", model);
         }
 
         [Authorize]
         [HttpGet]
-        public IActionResult ChangePhoneNumber()
+        public async Task<IActionResult> ChangePhoneNumber()
         {
-            return View();
+            ChangePhoneNumberModel model = new ChangePhoneNumberModel();
+            var user = await _userManager.GetUserAsync(User);
+            model.Input.PhoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            model.Username = await _userManager.GetUserNameAsync(user);
+            return View(model);
         }
 
         [Authorize]
@@ -369,10 +372,10 @@ namespace webapp.Controllers
                     model.StatusMessage = "Unexpected error when trying to set phone number.";
                     return View("~/Views/Admin/AdminIndex.cshtml");
                 }
+                await _signInManager.RefreshSignInAsync(user);
+                ViewBag.Message = "Your profile has been updated";
             }
 
-            await _signInManager.RefreshSignInAsync(user);
-            model.StatusMessage = "Your profile has been updated";
             return View("~/Views/Admin/ChangePhoneNumber.cshtml");
         }
 

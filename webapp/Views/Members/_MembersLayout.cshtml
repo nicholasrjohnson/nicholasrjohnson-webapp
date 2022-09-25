@@ -98,7 +98,7 @@
                     </div>
                     <div>
                       <p>
-                        <button id="logoutButton" class="nav-link btn btn-link text-dark">Click here to Logout</button>
+                        <button id="logoutButton" class="btn btn-secondary m-2 p-2">Click here to Logout</button>
                       </p>
                     </div>
                   </div>
@@ -128,19 +128,15 @@
                     </div>
                     <div>
                       <p>
-                        @Html.ActionLink("Forgot your password", "ForgotPassword", "Account")
+                        @Html.ActionLink("Forgot your password", "ForgotPassword", "Account", null, new { @class = "sidenav-link" })
                       </p>
                     </div>
                     <div>
                       <p>
-                        @Html.ActionLink("Register", "Register", "Account", new { model = new RegisterModel() }, null)
+                        @Html.ActionLink("Register", "Register", "Account", new { model = new RegisterModel() }, new { @class = "sidenav=link" })
                       </p>
                     </div>
-                    <div>
-                      <p>
-                        @Html.ActionLink("Resend email confirmation", "ResendEmailConfirmation", "Account")
-                      </p>
-                    </div>
+                  </div>
                   </div>
                 </div>
               </div> 
@@ -181,7 +177,9 @@
                 {
                   $("#Login").show();
                   $("#Logout").hide();
+                  window.location.href = result.url;
                 }
+
             }).fail( function() {
                 alert("logout failed");
             });
@@ -214,8 +212,7 @@
             }).fail( function() {
                 alert("login failed");
             });
-          });
-        }
+        });
       });
     </script>
   </body>

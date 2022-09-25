@@ -16,15 +16,12 @@
                 @using (Html.BeginForm("DeletePersonalData", "Admin", FormMethod.Post, new { id = "form", style="padding: 20px" }))
                 {
                     <div asp-validation-summary="All" class="text-danger"></div>
-                        @if (Model.RequirePassword)
-                        {
                           <div class="form-group">
                                <label asp-for="Input.Password"></label>
                             <input asp-for="Input.Password" class="form-control" />
                             <span asp-validation-for="Input.Password" class="text-danger"></span>
                          </div>
-                        }
-                        <button class="btn btn-primary m-2 p-2" type="submit">Delete data and close my account</button>
+                        <button class="btn btn-primary blurb-button m-2 p-2" type="submit">Delete data and close my account</button>
                 }
         </div>
 </div>
