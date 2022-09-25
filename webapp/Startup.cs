@@ -28,6 +28,9 @@ using MySql.Data.EntityFrameworkCore;
 using MySqlConnector;
 using webapp.Data;
 using webapp.Services;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace webapp 
 {
@@ -80,9 +83,20 @@ namespace webapp
                 .AddEntityFrameworkStores<ApplicationIdentityDbContext>()
                 .AddDefaultTokenProviders();
             
+            services.AddDataProtection()
+                .PersistKeysToFileSystem(
+                    new DirectoryInfo(@"/var/www/keys"))
+                .UseCryptographicAlgorithms(
+                    new AuthenticatedEncryptorConfiguration
+                        {
+                            EncryptionAlgorithm = EncryptionAlgorithm.AES_256_CBC,
+                            ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
+                });
+
             services.Configure<DataProtectionTokenProviderOptions>(opt =>
                 opt.TokenLifespan = TimeSpan.FromHours(2)
             );
+
            services.AddAuthentication()
             .AddCookie("www.nicholasrjohnson.scheme", options =>
             {
