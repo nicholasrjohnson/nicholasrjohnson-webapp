@@ -84,7 +84,7 @@ namespace webapp
                 .AddUserManager<UserManager<ApplicationIdentityUser>>()
                 .AddEntityFrameworkStores<ApplicationIdentityDbContext>()
                 .AddDefaultTokenProviders();
-            
+
             services.AddDataProtection()
                 .PersistKeysToFileSystem(
                     new DirectoryInfo(@"/var/www/keys"))
@@ -177,17 +177,7 @@ namespace webapp
 
 	private X509Certificate2 GetCertificate()
 	{
-		var assembly = typeof(Startup).GetTypeInfo().Assembly;
-		using (var stream = assembly.GetManifestResourceStream(
-					assembly.GetManifestResourceNames().First(r => r.EndsWith("nicholasrjohnson.pfx"))))
-		{
-			if (stream == null)
-				throw new ArgumentNullException(nameof(stream));
-
-			var bytes = new byte[stream.Length];
-			stream.Read(bytes, 0, bytes.Length);
-			return new X509Certificate2(bytes, _configuration["Keys:PFX"]);
-		}
+		return new X509Certificate2("/var/www/keys/nicholasrjohnson.pfx", _configuration["Keys:PFX"]);
 	}
     }
 

@@ -27,4 +27,8 @@
   <ItemGroup>
 	  <EmbeddedResource Include="/var/www/keys/nicholasrjohnson.pfx" />
   </ItemGroup>
+
+  <ItemGroup>
+	  <None Include="wwwroot/*" />
+  </ItemGroup>
 </Project>
